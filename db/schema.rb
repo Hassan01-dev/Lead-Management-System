@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_08_114909) do
+ActiveRecord::Schema.define(version: 2021_09_08_134212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,6 +81,13 @@ ActiveRecord::Schema.define(version: 2021_09_08_114909) do
     t.index ["user_id"], name: "index_phases_on_user_id"
   end
 
+  create_table "phases_users", id: false, force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "phase_id"
+    t.index ["phase_id"], name: "index_phases_users_on_phase_id"
+    t.index ["user_id"], name: "index_phases_users_on_user_id"
+  end
+
   create_table "projects", force: :cascade do |t|
     t.string "project_name"
     t.bigint "lead_id"
@@ -93,18 +100,16 @@ ActiveRecord::Schema.define(version: 2021_09_08_114909) do
 
   create_table "users", force: :cascade do |t|
     t.string "user_name"
-    t.string "user_email"
     t.integer "user_role"
-    t.text "user_password"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "users_phases", id: false, force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "phase_id"
-    t.index ["phase_id"], name: "index_users_phases_on_phase_id"
-    t.index ["user_id"], name: "index_users_phases_on_user_id"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -114,8 +119,8 @@ ActiveRecord::Schema.define(version: 2021_09_08_114909) do
   add_foreign_key "leads", "users"
   add_foreign_key "phases", "leads"
   add_foreign_key "phases", "users"
+  add_foreign_key "phases_users", "phases"
+  add_foreign_key "phases_users", "users"
   add_foreign_key "projects", "leads"
   add_foreign_key "projects", "users"
-  add_foreign_key "users_phases", "phases"
-  add_foreign_key "users_phases", "users"
 end
