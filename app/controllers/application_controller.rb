@@ -1,6 +1,20 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  def index; end
+
+  def show; end
+
+  def create; end
+
+  def new; end
+
+  def edit; end
+
+  def update; end
+
+  def destroy; end
+
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected

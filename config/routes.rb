@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get 'dashboard/index', as: 'dashboard'
+  get 'dashboard/', to: 'dashboard#index', as: 'dashboard'
+  resources :leads
   # root to: 'dashboard#login'
   root to: redirect('/users/sign_in')
   devise_for :users

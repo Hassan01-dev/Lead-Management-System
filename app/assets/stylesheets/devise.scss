@@ -1,11 +1,11 @@
 .form-auth {
   width: 100%;
-  max-width: 330px;
+  width: fit-content;
   padding: 15px;
   margin: 0 auto;
   margin-top: 30px;
   border: 0.5px solid grey;
-  border-radius: 8%;
+  border-radius: 15px;
 
   .checkbox {
     font-weight: 400;
@@ -31,4 +31,12 @@
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
+  .btn{
+    margin-top: 10px;
+  }
+}
+
+.auth-user{
+  max-width: 345px !important;
+  width: auto !important;
 }
