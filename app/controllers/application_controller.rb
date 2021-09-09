@@ -12,4 +12,8 @@ class ApplicationController < ActionController::Base
       u.permit(:user_name, :user_role, :name, :email, :password, :current_password)
     end
   end
+
+  def after_sign_in_path_for(resource)
+    stored_location_for(resource) || dashboard_path
+  end
 end
