@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  lead_name: MyString
+  lead_type: MyString
+  platform_used: MyString
+  is_sale: false
+  user: one
+  client: one
+
+two:
+  lead_name: MyString
+  lead_type: MyString
+  platform_used: MyString
+  is_sale: false
+  user: two
+  client: two
