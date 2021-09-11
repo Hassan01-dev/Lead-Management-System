@@ -1,21 +1,23 @@
 <section class="form-auth auth-user">
   <%= form_with model: lead do |f| %>
     <div>
-      <% lead.errors.full_messages_for(:title).each do |message| %>
+      <% lead.errors.full_messages.each do |message| %>
         <div><%= message %></div>
       <% end %>
     </div>
     <h3 class="h3 mb-3 font-weight-normal">Lead Info</h3>
-    <%= f.text_field :lead_name, autofocus: true, class: "form-control", placeholder: "Lead Name" %>
+    <%= f.text_field :lead_name, autofocus: true, class: "form-control", placeholder: "Lead Name", required:true %>
     <%= f.text_field :lead_type, autofocus: true, class: "form-control", placeholder: "Lead Type" %>
     <%= f.text_field :platform_used, autofocus: true, class: "form-control", placeholder: "Platform" %>
-
-    <h3 class="h3 mb-3 font-weight-normal">Client Info</h3>
-    <%= f.text_field :client_name, autofocus: true, class: "form-control", placeholder: "Client Name"%>
-    <%= f.text_field :client_address, autofocus: true, class: "form-control", placeholder: "Client Address" %>
-    <%= f.email_field :client_email, autofocus: true, class: "form-control", placeholder: "Client Email" %>
-    <%= f.text_field :client_contact, autofocus: true, class: "form-control", placeholder: "Client Contact" %>
-
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Create User</button><br>
+    <% if !lead.id %>
+      <h3 class="h3 mb-3 font-weight-normal">Client Info</h3>
+      <%= f.text_field :client_name, autofocus: true, class: "form-control", placeholder: "Client Name"%>
+      <%= f.text_field :client_address, autofocus: true, class: "form-control", placeholder: "Client Address" %>
+      <%= f.email_field :client_email, autofocus: true, class: "form-control", placeholder: "Client Email" %>
+      <%= f.text_field :client_contact, autofocus: true, class: "form-control", placeholder: "Client Contact" %>
+    <% else %>
+      <%= render "client_details", lead: lead %>
+    <% end %>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button><br>
   <% end %>
 </section>
