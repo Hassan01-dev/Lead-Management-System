@@ -1,0 +1,41 @@
+<div>
+  <h1>Lead Detial</h1>
+  <div>
+    <h3>Lead Name : </h3>
+    <p><%= @lead.lead_name%></p>
+  </div>
+  <div>
+    <h3>Lead Type : </h3>
+    <p><%= @lead.lead_type%></p>
+  </div>
+  <div>
+    <h3>Platform : </h3>
+    <p><%= @lead.platform_used%></p>
+  </div>
+
+  <div>
+    <h3>Owner</h3>
+    <p><%= @lead.user.user_name%></p>
+  </div>
+</div>
+
+<div>
+  <h2>Client Information</h2>
+  <% @client = @lead.client%>
+  <div>
+    <h3>Client Name :</h3>
+    <p><%= @client.client_name%></p>
+  </div>
+  <div>
+    <h3>Client Email : </h3>
+    <p><%= @client.client_email%></p>
+  </div>
+  <div>
+    <h3>Client Address : </h3>
+    <p><%= @client.client_address%></p>
+  </div>
+  <div>
+    <h3>Client Contact No : </h3>
+    <p><%= @client.client_contact%></p>
+  </div>
+</div>

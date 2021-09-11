@@ -7,19 +7,62 @@ class LeadsController < ApplicationController
     @leads = Lead.all
   end
 
+  def new
+    @lead = Lead.new
+  end
+
   def create
     @lead = Lead.new(lead_params)
-    @user = current_user
-    if @lead.save
-      redirect_to @lead
+    @client = Client.new(client_params)
+    if @client.save
+      @lead.user = current_user
+      @lead.is_sale = false
+      @lead.client = @client
+      if @lead.save
+        redirect_to @lead
+      else
+        render new
+      end
     else
       render new
     end
   end
 
+  def show
+    find_lead
+  end
+
+  def edit
+    find_lead
+  end
+
+  def update
+    find_lead
+    if @lead.update(lead_params)
+      redirect_to @lead
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    find_lead
+    @lead.destroy
+    @lead.client.delete
+    redirect_to leads_path
+  end
+
   private
 
   def lead_params
-    params.require(:lead).permit(:title, :text)
+    params.require(:lead).permit(:lead_name, :lead_type, :platform_used)
+  end
+
+  def client_params
+    params.require(:lead).permit(:client_name, :client_address, :client_email, :client_contact)
+  end
+
+  def find_lead
+    @lead = Lead.find(params[:id])
   end
 end
