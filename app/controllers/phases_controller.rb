@@ -2,18 +2,20 @@
 
 class PhasesController < ApplicationController
   layout 'dashboard'
+  before_action :find_phase, only: %i[show edit update destroy]
+  before_action :find_lead, only: %i[index create]
 
   def index
-    find_lead
     @phases = @lead.phases
   end
+
+  def show; end
 
   def new
     @phase = Phase.new
   end
 
   def create
-    find_lead
     @phase = @lead.phases.build(phase_params)
     @phase.approved = false
     if @phase.save
@@ -23,12 +25,9 @@ class PhasesController < ApplicationController
     end
   end
 
-  def edit
-    find_phase
-  end
+  def edit; end
 
   def update
-    find_phase
     if @phase.update(phase_params)
       redirect_to @phase
     else
@@ -38,7 +37,6 @@ class PhasesController < ApplicationController
 
   def destroy
     @lead = Phase.find(params[:id]).lead
-    @phase = find_phase
     @phase.destroy
     redirect_to lead_phases_path(@lead)
   end

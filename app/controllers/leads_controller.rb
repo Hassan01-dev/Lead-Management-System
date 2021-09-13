@@ -3,6 +3,8 @@
 class LeadsController < ApplicationController
   layout 'dashboard'
 
+  before_action :find_lead, only: %i[show edit update destroy]
+
   def index
     @leads = Lead.all
   end
@@ -28,16 +30,11 @@ class LeadsController < ApplicationController
     end
   end
 
-  def show
-    find_lead
-  end
+  def show; end
 
-  def edit
-    find_lead
-  end
+  def edit; end
 
   def update
-    find_lead
     if @lead.update(lead_params)
       redirect_to @lead
     else
@@ -46,9 +43,7 @@ class LeadsController < ApplicationController
   end
 
   def destroy
-    find_lead
     @lead.destroy
-    @lead.client.delete
     redirect_to leads_path
   end
 

@@ -7,6 +7,10 @@
     <%= f.text_field :user_name, autofocus: true, autocomplete: "name", class: "form-control", placeholder: "Full Name" %>
     <%# <%= f.number_field :user_role, autofocus: true, class: "form-control", placeholder: "User Role" %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email address" %>
+    <div class="role_select">
+      <%= f.label :roles%>
+      <%= f.select :roles, ['admin', 'BD', 'TM', 'engineer'] %>
+    </div>
     <%= f.password_field :password , class: "form-control", placeholder: "Password (Minimum 6 character)"%>
     <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Confirm Password" %>
 

@@ -14,7 +14,10 @@
     <%= f.check_box :approved %>
   </div>
 <% else %>
-  <%= f.collection_select :user_id, all_tech_manager, :id, :user_name, autofocus: true, class: "form-control", required:true %>
+<div>
+    <%= f.label :Select_Technical_Manager%>:
+    <%= f.collection_select :user_id, all_tech_manager, :id, :user_name, autofocus: true, class: "form-control", required:true %>
+  </div>
 <% end %>
 
 <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button><br>
