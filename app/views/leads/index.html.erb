@@ -1,0 +1,36 @@
+<h1>Leads</h1>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Lead Name</th>
+      <th scope="col">Lead Type</th>
+      <th scope="col">Platform</th>
+      <th scope="col">Client Name</th>
+      <th scope="col">Owner</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+    <tr>
+  </tr>
+  </thead>
+  <tbody>
+    <% @leads.each do |lead| %>
+      <tr>
+        <th scope="row">*</th>
+        <td><%= lead.lead_name %></td>
+        <td><%= lead.lead_type %></td>
+        <td><%= lead.platform_used %></td>
+        <td><%= lead.client.client_name %></td>
+        <td><%= lead.user.user_name %></td>
+        <td><%= link_to 'View', lead_path(lead),class: "btn btn-primary" %></td>
+        <td><%= link_to 'Edit', edit_lead_path(lead), class: "btn btn-secondary" %></td>
+        <td><%= link_to 'Delete', lead_path(lead),
+              method: :delete,
+              data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
