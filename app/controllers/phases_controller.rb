@@ -46,7 +46,7 @@ class PhasesController < ApplicationController
   private
 
   def phase_params
-    params.require(:phase).permit(:phase_type, :start_date, :end_date, :user_id)
+    params.require(:phase).permit(:phase_type, :start_date, :end_date, :user_id, :approved)
   end
 
   def find_phase

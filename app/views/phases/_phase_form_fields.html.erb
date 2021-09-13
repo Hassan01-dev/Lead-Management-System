@@ -8,5 +8,13 @@
   <%= f.label :end_date %>:
   <%= f.date_select :end_date, autofocus: true, class: "form-control" %>
 </div>
-<%= f.number_field :user_id, autofocus: true, class: "form-control", placeholder: "User ID", required:true %>
+<% if params[:id] %>
+  <div>
+    <%= f.label :approved %>:
+    <%= f.check_box :approved %>
+  </div>
+<% else %>
+  <%= f.collection_select :user_id, all_tech_manager, :id, :user_name, autofocus: true, class: "form-control", required:true %>
+<% end %>
+
 <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button><br>
