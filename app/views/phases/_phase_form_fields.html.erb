@@ -1,0 +1,12 @@
+<h3 class="h3 mb-3 font-weight-normal">Phase Details</h3>
+<%= f.text_field :phase_type, autofocus: true, class: "form-control", placeholder: "Phase Type", required:true %>
+<div>
+  <%= f.label :start_date %>:
+  <%= f.date_select :start_date, autofocus: true, class: "form-control" %>
+</div>
+<div>
+  <%= f.label :end_date %>:
+  <%= f.date_select :end_date, autofocus: true, class: "form-control" %>
+</div>
+<%= f.number_field :user_id, autofocus: true, class: "form-control", placeholder: "User ID", required:true %>
+<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button><br>
