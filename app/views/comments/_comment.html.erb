@@ -1,0 +1,21 @@
+
+<h4><%= comment.user.user_name %></h4>
+<p><%= comment.comment_text %></td>
+<% if comment.images.attached? %>
+    <ul class="comment_images">
+      <% comment.images.each do |image| %>
+        <li>
+          <%= image_tag(image, width: 200) %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+<% if current_user == comment.user %>
+  <%= link_to 'Edit', edit_comment_path(comment), class: "btn btn-secondary" %>
+  <%= link_to 'Delete', comment_path(comment),
+        method: :delete,
+        data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+<% end %>
+<br>
+
