@@ -1,3 +1,7 @@
-Show Phase Page
+<%= render 'phase_details'%>
+<hr>
+<h3>Comments</h3>
+<%= render  @phase.comments %>
 
+<%= link_to 'Add Comment', new_phase_comment_path(@phase) , class: "btn btn-primary" %>
 <%= render 'shared/back_navigation', path: lead_phases_path(@phase.lead)  %>

@@ -1,0 +1,13 @@
+<section class="form-auth auth-user">
+  <% if comment.id %>
+    <% @phase = Comment.find(params[:id]).phase %>
+    <%= form_with model: comment do |f| %>
+      <% render 'comment_form_fields', f: f%>
+    <% end %>
+  <% else %>
+    <% @phase = Phase.find(params[:phase_id]) %>
+    <%= form_with model: [@phase, @phase.comments.build] do |f| %>
+      <% render 'comment_form_fields', f: f%>
+    <% end %>
+  <% end %>
+</section>

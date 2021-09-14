@@ -3,7 +3,9 @@
 Rails.application.routes.draw do
   get 'dashboard/', to: 'dashboard#index', as: 'dashboard'
   resources :leads do
-    resources :phases, shallow: true
+    resources :phases, shallow: true do
+      resources :comments, shallow: true
+    end
   end
   # root to: 'dashboard#login'
   root to: redirect('/users/sign_in')

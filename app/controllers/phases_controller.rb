@@ -36,9 +36,8 @@ class PhasesController < ApplicationController
   end
 
   def destroy
-    @lead = Phase.find(params[:id]).lead
     @phase.destroy
-    redirect_to lead_phases_path(@lead)
+    redirect_to lead_phases_path(@phase.lead)
   end
 
   private
