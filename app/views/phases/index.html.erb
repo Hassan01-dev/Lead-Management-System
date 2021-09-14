@@ -26,12 +26,14 @@
         <td><%= phase.user.user_name %></td>
         <td><%= phase.assigned_engineer %></td>
         <td><%= link_to 'View',phase_path(phase), class: "btn btn-primary" %></td>
-        <% if current_user.has_role? :BD %>
-          <td><%= link_to 'Edit', edit_phase_path(phase), class: "btn btn-secondary" %></td>
-          <td><%= link_to 'Delete', phase_path(phase),
-                method: :delete,
-                data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
-                </td>
+        <% if current_user %>
+          <% if current_user.has_role? :BD %>
+            <td><%= link_to 'Edit', edit_phase_path(phase), class: "btn btn-secondary" %></td>
+            <td><%= link_to 'Delete', phase_path(phase),
+                  method: :delete,
+                  data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+                  </td>
+          <% end %>
         <% end %>
       </tr>
     <% end %>

@@ -15,17 +15,17 @@ class ApplicationController < ActionController::Base
 
   def destroy; end
 
-  before_action :configure_permitted_parameters, if: :devise_controller?
+  # before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected
 
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:user_name, :user_role, :email, :password) }
+  # def configure_permitted_parameters
+  #   devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:user_name, :user_role, :email, :password) }
 
-    devise_parameter_sanitizer.permit(:account_update) do |u|
-      u.permit(:user_name, :user_role, :name, :email, :password, :current_password)
-    end
-  end
+  #   devise_parameter_sanitizer.permit(:account_update) do |u|
+  #     u.permit(:user_name, :user_role, :name, :email, :password, :current_password)
+  #   end
+  # end
 
   def after_sign_in_path_for(resource)
     stored_location_for(resource) || leads_path

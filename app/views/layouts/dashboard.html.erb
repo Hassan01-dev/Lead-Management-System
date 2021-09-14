@@ -26,9 +26,6 @@
           <li class="nav-item text-nowrap">
             <%= link_to 'login', new_user_session_path, :class => "nav-link" %>
           </li>
-          <li class="nav-item text-nowrap">
-            <%= link_to 'sign up', new_user_registration_path, :class => "nav-link"%>
-          </li>
         <% end %>
       </ul>
     </nav>
@@ -37,10 +34,13 @@
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
             <%= render 'dashboard/common_options' %>
-            <%= render 'dashboard/admin_options' if current_user.has_role? :admin %>
-            <%= render 'dashboard/BD_options' if current_user.has_role? :BD %>
-            <%= render 'dashboard/TM_options' if current_user.has_role? :TM %>
-            <%= render 'dashboard/engineer_options' if current_user.has_role? :engineer %>
+            <% if current_user %>
+              <p><%= current_user.user_name %></p>
+              <%= render 'dashboard/admin_options' if current_user.has_role? :admin %>
+              <%= render 'dashboard/BD_options' if current_user.has_role? :BD %>
+              <%= render 'dashboard/TM_options' if current_user.has_role? :TM %>
+              <%= render 'dashboard/engineer_options' if current_user.has_role? :engineer %>
+            <% end %>
           </div>
         </nav>
 

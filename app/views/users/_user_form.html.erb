@@ -1,6 +1,6 @@
 <section class="form-auth text-center auth-user">
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-    <%= render "devise/shared/error_messages", resource: resource %>
+  <%= form_with model: user do |f| %>
+    <%# render "devise/shared/error_messages", resource: resource %>
 
     <h1 class="h3 mb-3 font-weight-normal">Create User</h1>
 
@@ -9,11 +9,12 @@
     <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email address" %>
     <div class="role_select">
       <%= f.label :user_role%>
-      <%= f.select :user_role, ['admin', 'BD', 'TM', 'engineer'] %>
+      <%= f.select :user_role, ['admin', 'BD', 'TM', 'engineer'], selected: user.user_role %>
     </div>
-    <%= f.password_field :password , class: "form-control", placeholder: "Password (Minimum 6 character)"%>
-    <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Confirm Password" %>
-
+    <% if !user.id %>
+      <%= f.password_field :password , class: "form-control", placeholder: "Password (Minimum 6 character)"%>
+      <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Confirm Password" %>
+    <% end %>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Create User</button><br>
   <% end %>
 </section>
