@@ -9,7 +9,7 @@
     <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email address" %>
     <div class="role_select">
       <%= f.label :user_role%>
-      <%= f.select :user_role, ['admin', 'BD', 'TM', 'engineer'], selected: user.user_role %>
+      <%= f.select :user_role, ['','admin', 'BD', 'TM', 'engineer'], selected: user.user_role %>
     </div>
     <% if !user.id %>
       <%= f.password_field :password , class: "form-control", placeholder: "Password (Minimum 6 character)"%>

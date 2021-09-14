@@ -1,5 +1,8 @@
 <h3 class="h3 mb-3 font-weight-normal">Phase Details</h3>
-<%= f.text_field :phase_type, autofocus: true, class: "form-control", placeholder: "Phase Type", required:true %>
+
+<%= f.label :phase_type %>:
+<%= f.select :phase_type, ['','test', 'interview'], selected: @phase.phase_type %>
+
 <div>
   <%= f.label :start_date %>:
   <%= f.date_select :start_date, autofocus: true, class: "form-control" %>
