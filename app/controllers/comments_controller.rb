@@ -42,7 +42,7 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:comment_text)
+    params.require(:comment).permit(:comment_text, images: [])
   end
 
   def find_comment
