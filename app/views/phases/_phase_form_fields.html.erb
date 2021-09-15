@@ -1,7 +1,21 @@
+<% if @phase.errors.any? %>
+  <div>
+    <h2>
+      <%= pluralize(@phase.errors.count, "error") %> prohibited
+      this Phase from being Saved:
+    </h2>
+    <ul>
+      <% @phase.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <h3 class="h3 mb-3 font-weight-normal">Phase Details</h3>
 
 <%= f.label :phase_type %>:
-<%= f.select :phase_type, ['','test', 'interview'], selected: @phase.phase_type %>
+<%= f.select :phase_type, ['test', 'interview'],{ prompt: "Please select Phase Type"}, autofocus: true, class: "form-control", selected: @phase.phase_type %>
 
 <div>
   <%= f.label :start_date %>:
@@ -11,15 +25,14 @@
   <%= f.label :end_date %>:
   <%= f.date_select :end_date, autofocus: true, class: "form-control" %>
 </div>
+<div>
+  <%= f.label :Select_Technical_Manager%>:
+  <%= f.collection_select :user_id, all_tech_manager, :id, :user_name,{ prompt: "Please select Technical Manager"}, autofocus: true, class: "form-control" %>
+</div>
 <% if params[:id] %>
   <div>
     <%= f.label :approved %>:
     <%= f.check_box :approved %>
-  </div>
-<% else %>
-<div>
-    <%= f.label :Select_Technical_Manager%>:
-    <%= f.collection_select :user_id, all_tech_manager, :id, :user_name, autofocus: true, class: "form-control", required:true %>
   </div>
 <% end %>
 

@@ -4,6 +4,7 @@ class PhasesController < ApplicationController
   layout 'dashboard'
   before_action :find_phase, only: %i[show edit update destroy]
   before_action :find_lead, only: %i[index create]
+  before_action :find_phase_for_custom_action, only: %i[add_engineer approve]
 
   def index
     @phases = @lead.phases
@@ -21,7 +22,7 @@ class PhasesController < ApplicationController
     if @phase.save
       redirect_to @phase
     else
-      render new
+      render 'new'
     end
   end
 
@@ -40,9 +41,12 @@ class PhasesController < ApplicationController
     redirect_to lead_phases_path(@phase.lead)
   end
 
-  def add_engineer
-    @phase = Phase.find(params[:phase_id])
+  def approve
+    @phase.toggle!(:approved) # rubocop:disable Rails/SkipsModelValidations
+    redirect_to lead_phases_path(@phase.lead)
   end
+
+  def add_engineer; end
 
   private
 
@@ -52,6 +56,10 @@ class PhasesController < ApplicationController
 
   def find_phase
     @phase = Phase.find(params[:id])
+  end
+
+  def find_phase_for_custom_action
+    @phase = Phase.find(params[:phase_id])
   end
 
   def find_lead

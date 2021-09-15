@@ -2,16 +2,13 @@
 
 class Lead < ApplicationRecord
   belongs_to :user
-  belongs_to :client
   has_one :project # rubocop:disable Rails/HasManyOrHasOneDependent
   has_many :phases # rubocop:disable Rails/HasManyOrHasOneDependent
 
-  after_destroy :delete_respective_client
-
-  private
-
-  def delete_respective_client
-    client.delete
-  end
+  validates :lead_name, presence: true
+  validates :platform_used, presence: true, length: { minimum: 3 }
+  validates :lead_type, presence: true
+  validates :client_name, presence: true
+  validates :client_contact, presence: true, length: { minimum: 11, message: 'is not valid' }
   # alias owner user_id
 end

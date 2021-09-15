@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_14_081228) do
+ActiveRecord::Schema.define(version: 2021_09_15_113419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,15 +36,6 @@ ActiveRecord::Schema.define(version: 2021_09_14_081228) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "clients", force: :cascade do |t|
-    t.string "client_name"
-    t.text "client_address"
-    t.string "client_email"
-    t.string "client_contact"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "comments", force: :cascade do |t|
     t.string "comment_text"
     t.bigint "user_id"
@@ -61,10 +52,12 @@ ActiveRecord::Schema.define(version: 2021_09_14_081228) do
     t.string "platform_used"
     t.boolean "is_sale"
     t.bigint "user_id"
-    t.bigint "client_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["client_id"], name: "index_leads_on_client_id"
+    t.string "client_name"
+    t.string "client_address"
+    t.string "client_email"
+    t.string "client_contact"
     t.index ["user_id"], name: "index_leads_on_user_id"
   end
 
@@ -127,7 +120,6 @@ ActiveRecord::Schema.define(version: 2021_09_14_081228) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "phases"
   add_foreign_key "comments", "users"
-  add_foreign_key "leads", "clients"
   add_foreign_key "leads", "users"
   add_foreign_key "phases", "leads"
   add_foreign_key "phases", "users"
