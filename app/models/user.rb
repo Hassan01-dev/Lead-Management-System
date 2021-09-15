@@ -6,7 +6,6 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable,
          :recoverable, :rememberable, :validatable
-  has_and_belongs_to_many :phases # rubocop:disable Rails/HasAndBelongsToMany
   has_many :projects # rubocop:disable Rails/HasManyOrHasOneDependent
   has_many :leads # rubocop:disable Rails/HasManyOrHasOneDependent
   has_many :comments # rubocop:disable Rails/HasManyOrHasOneDependent

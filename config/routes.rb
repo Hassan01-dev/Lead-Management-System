@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'leads#index', as: 'dashboard'
   resources :leads do
     resources :phases, shallow: true do
+      get '/add_engineer', to: 'phases#add_engineer', as: 'add_engineer'
       resources :comments, shallow: true
     end
   end

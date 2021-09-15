@@ -40,10 +40,14 @@ class PhasesController < ApplicationController
     redirect_to lead_phases_path(@phase.lead)
   end
 
+  def add_engineer
+    @phase = Phase.find(params[:phase_id])
+  end
+
   private
 
   def phase_params
-    params.require(:phase).permit(:phase_type, :start_date, :end_date, :user_id, :approved)
+    params.require(:phase).permit(:phase_type, :start_date, :end_date, :user_id, :approved, assigned_engineer: [])
   end
 
   def find_phase

@@ -1,6 +1,6 @@
 <section class="form-auth auth-user">
   <% if phase.id %>
-    <% @lead = Phase.find(params[:id]).lead%>
+    <% @lead = Phase.find(params[:id]).lead %>
     <%= form_with model: phase do |f| %>
       <% render 'phase_form_fields', f: f%>
     <% end %>

@@ -24,10 +24,11 @@
         <td><%= phase.start_date %></td>
         <td><%= phase.end_date %></td>
         <td><%= phase.user.user_name %></td>
-        <td><%= phase.assigned_engineer %></td>
+        <%= render "show_all_engineer_in_phase", engineers: phase.assigned_engineer %>
         <td><%= link_to 'View',phase_path(phase), class: "btn btn-primary" %></td>
         <% if current_user %>
           <% if current_user.has_role? :BD %>
+            <td><%= link_to 'Add Engineer', phase_add_engineer_path(phase), class: "btn btn-success" %></td>
             <td><%= link_to 'Edit', edit_phase_path(phase), class: "btn btn-secondary" %></td>
             <td><%= link_to 'Delete', phase_path(phase),
                   method: :delete,

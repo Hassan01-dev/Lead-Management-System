@@ -1,0 +1,15 @@
+<%= render 'phase_details'%>
+
+<section class="form-auth auth-user">
+  <%= form_with model: @phase do |f| %>
+  <%= f.select(:assigned_engineer, all_engineer.collect {|p| [ p.user_name, p.id] },
+                                                  { :prompt => "Please select"},
+                                                  { :multiple => true, size: 5  }) %>
+
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button><br>
+  <% end %>
+
+</section>
+
+
