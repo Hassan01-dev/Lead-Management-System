@@ -7,7 +7,8 @@
     </div>
     <h3 class="h3 mb-3 font-weight-normal">Lead Info</h3>
     <%= f.text_field :lead_name, autofocus: true, class: "form-control", placeholder: "Lead Name", required:true %>
-    <%= f.text_field :lead_type, autofocus: true, class: "form-control", placeholder: "Lead Type" %>
+    <%= f.label :lead_type %>
+    <%= f.select :lead_type, ['','test', 'interview'], selected: lead.lead_type %>
     <%= f.text_field :platform_used, autofocus: true, class: "form-control", placeholder: "Platform" %>
     <% if !lead.id %>
       <h3 class="h3 mb-3 font-weight-normal">Client Info</h3>

@@ -1,9 +1,10 @@
 <%= render "lead_details", lead: @lead %>
 
 <%= render "client_details", lead: @lead %>
-
-<% if current_user.has_role? :BD %>
-  <%= link_to 'Create Phase', new_lead_phase_path(@lead),class: "btn btn-primary" %>
+<% if current_user %>
+  <% if current_user.has_role? :BD %>
+    <%= link_to 'Create Phase', new_lead_phase_path(@lead),class: "btn btn-primary" %>
+  <% end %>
 <% end %>
 <%= link_to 'Show All Phases', lead_phases_path(@lead) ,class: "btn btn-primary" %>
 <%= render 'shared/back_navigation', path: leads_path %>
