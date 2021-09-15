@@ -13,6 +13,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+      UserMailer.with(admin: current_user, user: @user).user_created.deliver_later
       redirect_to users_path
     else
       render 'new'
