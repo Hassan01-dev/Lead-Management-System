@@ -1,0 +1,12 @@
+<h1>Lead Edited</h1>
+
+<p>
+  A Lead which is associated to <b><%= @user.user_name %></b> has been edited by :  <%= @admin.user_name %>
+</p>
+ to
+<ul>
+  <li>Lead Name: <%= @lead.lead_name %></li>
+  <li>Lead Type: <%= @lead.lead_type %></li>
+</ul>
+
+<p>For More detail about Lead and the Client against which it made, follow this <%= link_to 'Link', lead_url(@lead) %> </p>

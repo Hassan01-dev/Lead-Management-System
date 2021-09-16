@@ -20,6 +20,8 @@ class PhasesController < ApplicationController
     @phase = @lead.phases.build(phase_params)
     @phase.approved = false
     if @phase.save
+      PhaseMailer.with(phase: @phase, admin: current_user).phase_created.deliver_later
+      PhaseMailer.with(phase: @phase, admin: current_user).phase_assigned_TM.deliver_later
       redirect_to @phase
     else
       render 'new'
@@ -30,6 +32,7 @@ class PhasesController < ApplicationController
 
   def update
     if @phase.update(phase_params)
+      PhaseMailer.with(phase: @phase, admin: current_user).phase_update.deliver_later
       redirect_to @phase
     else
       render :edit
@@ -38,11 +41,14 @@ class PhasesController < ApplicationController
 
   def destroy
     @phase.destroy
+    PhaseMailer.with(phase: @phase, admin: current_user).phase_deleted.deliver_later
     redirect_to lead_phases_path(@phase.lead)
   end
 
   def approve
-    @phase.toggle!(:approved) # rubocop:disable Rails/SkipsModelValidations
+    if @phase.toggle!(:approved) # rubocop:disable Rails/SkipsModelValidations
+      PhaseMailer.with(phase: @phase, admin: current_user).phase_status.deliver_later
+    end
     redirect_to lead_phases_path(@phase.lead)
   end
 

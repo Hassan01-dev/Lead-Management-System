@@ -18,23 +18,20 @@
   </thead>
   <tbody>
     <% @leads.each do |lead| %>
-      <tr>
-        <th scope="row">*</th>
-        <td><%= lead.lead_name %></td>
-        <td><%= lead.lead_type %></td>
-        <td><%= lead.platform_used %></td>
-        <td><%= lead.client_name %></td>
-        <td><%= lead.user.user_name %></td>
-        <td><%= link_to 'View', lead_path(lead),class: "btn btn-primary" %></td>
-        <% if current_user %>
-          <% if current_user.has_role? :BD %>
-            <td><%= link_to 'Edit', edit_lead_path(lead), class: "btn btn-secondary" %></td>
-            <td><%= link_to 'Delete', lead_path(lead),
-                  method: :delete,
-                  data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></td>
+      <% if !lead.is_sale %>
+        <tr>
+          <th scope="row">*</th>
+          <td><%= lead.lead_name %></td>
+          <td><%= lead.lead_type %></td>
+          <td><%= lead.platform_used %></td>
+          <td><%= lead.client_name %></td>
+          <td><%= lead.user.user_name %></td>
+          <td><%= link_to 'View', lead_path(lead),class: "btn btn-primary" %></td>
+          <% if current_user && (current_user.has_role? :BD) %>
+            <%= render 'restricted_options', lead: lead %>
           <% end %>
-        <% end %>
-      </tr>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

@@ -1,0 +1,13 @@
+<section class="form-auth text-center auth-user">
+  <%= form_with model: project, local: true do |f| %>
+    <%= render "devise/shared/error_messages", resource: project %>
+
+    <h1 class="h3 mb-3 font-weight-normal">Create Project</h1>
+
+    <%= f.text_field :project_name, autofocus: true, autocomplete: "name", class: "form-control", placeholder: "Project Name", required: true %>
+    <div>
+      <%= f.collection_select :user_id, all_tech_manager, :id, :user_name,{ prompt: "Please select Technical Manager"}, autofocus: true, class: "form-control" %>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button><br>
+  <% end %>
+</section>

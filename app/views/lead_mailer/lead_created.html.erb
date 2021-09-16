@@ -1,0 +1,11 @@
+<h1>Lead Created</h1>
+
+<p>
+  A Lead has been created by: <%= @user.user_name%> with following discription
+</p>
+<ul>
+  <li>Lead Name: <%= @lead.lead_name %></li>
+  <li>Lead Type: <%= @lead.lead_type %></li>
+</ul>
+
+<p>For More detail about Lead and the Client against which it made, follow this <%= link_to 'Link', lead_url(@lead) %> </p>
