@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :leads do
     resources :phases, shallow: true do
       get '/add_engineer', to: 'phases#add_engineer', as: 'add_engineer'
+      get '/approve', to: 'phases#approve', as: 'approve'
       resources :comments, shallow: true
     end
   end

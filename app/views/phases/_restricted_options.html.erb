@@ -1,0 +1,13 @@
+<% if !phase.approved %>
+  <td><%= link_to 'Approve', phase_approve_path(phase),
+      data: { confirm: 'Are you sure?' }, class: "btn btn-secondary" %></td>
+<% else %>
+  <td></td>
+<% end %>
+
+<td><%= link_to 'Add Engineer', phase_add_engineer_path(phase), class: "btn btn-success" %></td>
+<td><%= link_to 'Edit', edit_phase_path(phase), class: "btn btn-secondary" %></td>
+<td><%= link_to 'Delete', phase_path(phase),
+      method: :delete,
+      data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+      </td>

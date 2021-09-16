@@ -6,7 +6,7 @@ class LeadsController < ApplicationController
   before_action :find_lead, only: %i[show edit update destroy]
 
   def index
-    @leads = Lead.all
+    @leads = Lead.order(:platform_used).page(params[:page]).per(10)
   end
 
   def new
@@ -15,18 +15,11 @@ class LeadsController < ApplicationController
 
   def create
     @lead = Lead.new(lead_params)
-    @client = Client.new(client_params)
-    if @client.save
-      @lead.user = current_user
-      @lead.is_sale = false
-      @lead.client = @client
-      if @lead.save
-        redirect_to @lead
-      else
-        render new
-      end
+    @lead.user = current_user
+    if @lead.save
+      redirect_to @lead
     else
-      render new
+      render 'new'
     end
   end
 
@@ -50,11 +43,8 @@ class LeadsController < ApplicationController
   private
 
   def lead_params
-    params.require(:lead).permit(:lead_name, :lead_type, :platform_used)
-  end
-
-  def client_params
-    params.require(:lead).permit(:client_name, :client_address, :client_email, :client_contact)
+    params.require(:lead).permit(:lead_name, :lead_type, :platform_used, :client_name, :client_address, :client_email,
+                                 :client_contact)
   end
 
   def find_lead

@@ -3,4 +3,5 @@
 <p>Phase Type : <%= @phase.phase_type %></p>
 <p>Start Date : <%= @phase.start_date %></p>
 <p>End Date : <%= @phase.start_date %></p>
-<p>Assigned To : <%= @phase.user.user_name %></p>
+<p>Assigned Technical Manager : <%= @phase.user.user_name %></p>
+<p>Assigned Engineers : <%= find_all_engineer_of_phase(@phase.assigned_engineer) if @phase.assigned_engineer %></p>

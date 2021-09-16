@@ -1,24 +1,18 @@
 <section class="form-auth auth-user">
-  <%= form_with model: lead do |f| %>
-    <div>
-      <% lead.errors.full_messages.each do |message| %>
-        <div><%= message %></div>
-      <% end %>
-    </div>
+  <%= form_with scope: :lead, url: leads_path, remote: true do |f| %>
+    <%= render "devise/shared/error_messages", resource: lead %>
+    <%# <%= render "devise/shared/error_messages", resource: client %>
+
     <h3 class="h3 mb-3 font-weight-normal">Lead Info</h3>
     <%= f.text_field :lead_name, autofocus: true, class: "form-control", placeholder: "Lead Name", required:true %>
-    <%= f.label :lead_type %>
-    <%= f.select :lead_type, ['','test', 'interview'], selected: lead.lead_type %>
+    <%= f.select :lead_type, ['test', 'interview'],{ prompt: "Please select Lead Type"}, autofocus: true, class: "form-control", selected: lead.lead_type %>
     <%= f.text_field :platform_used, autofocus: true, class: "form-control", placeholder: "Platform" %>
-    <% if !lead.id %>
-      <h3 class="h3 mb-3 font-weight-normal">Client Info</h3>
-      <%= f.text_field :client_name, autofocus: true, class: "form-control", placeholder: "Client Name"%>
-      <%= f.text_field :client_address, autofocus: true, class: "form-control", placeholder: "Client Address" %>
-      <%= f.email_field :client_email, autofocus: true, class: "form-control", placeholder: "Client Email" %>
-      <%= f.text_field :client_contact, autofocus: true, class: "form-control", placeholder: "Client Contact" %>
-    <% else %>
-      <%= render "client_details", lead: lead %>
-    <% end %>
+    <h3 class="h3 mb-3 font-weight-normal">Client Info</h3>
+    <%= f.text_field :client_name, autofocus: true, class: "form-control", placeholder: "Client Name", required:true%>
+    <%= f.text_field :client_address, autofocus: true, class: "form-control", placeholder: "Client Address"%>
+    <%= f.email_field :client_email, autofocus: true, class: "form-control", placeholder: "Client Email",required:true %>
+    <%= f.text_field :client_contact, autofocus: true, class: "form-control", placeholder: "Client Contact", required:true %>
+
     <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button><br>
   <% end %>
 </section>

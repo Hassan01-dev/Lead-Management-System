@@ -10,7 +10,11 @@ class User < ApplicationRecord
   has_many :leads # rubocop:disable Rails/HasManyOrHasOneDependent
   has_many :comments # rubocop:disable Rails/HasManyOrHasOneDependent
 
+  # validates :title, presence: true, length: { minimum: 5 }
   after_create :add_role_to_user
+  validates :user_name, presence: true
+  validates :email, presence: true
+  validates :user_role, presence: true
 
   private
 
@@ -18,12 +22,9 @@ class User < ApplicationRecord
     case user_role
     when 'admin'
       add_admin_role
-      add_bd_role
-      add_tm_role
 
     when 'BD'
       add_bd_role
-      add_tm_role
 
     when 'TM'
       add_tm_role
@@ -33,14 +34,17 @@ class User < ApplicationRecord
 
   def add_admin_role
     add_role :admin
+    add_bd_role
   end
 
   def add_bd_role
     add_role :BD
+    add_tm_role
   end
 
   def add_tm_role
     add_role :TM
+    add_engineer_role
   end
 
   def add_engineer_role
