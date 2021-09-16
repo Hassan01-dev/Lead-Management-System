@@ -1,0 +1,12 @@
+<h1>Lead Status Changed</h1>
+
+<p>
+  Status of a Lead which is associated to <b><%= @user.user_name %></b>
+</p>
+<ul>
+  <li>Lead Name: <%= @lead.lead_name %></li>
+  <li>Lead Type: <%= @lead.lead_type %></li>
+</ul>
+
+<p>has been changed to Is Sale by : <%= @admin.user_name %></p>
+<p>For More detail about Lead and the Client against which it made, follow this <%= link_to 'Link', lead_url(@lead) %> </p>

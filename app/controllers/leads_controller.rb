@@ -16,7 +16,9 @@ class LeadsController < ApplicationController
   def create
     @lead = Lead.new(lead_params)
     @lead.user = current_user
+    @lead.is_sale = false
     if @lead.save
+      LeadMailer.with(lead: @lead).lead_created.deliver_later
       redirect_to @lead
     else
       render 'new'
@@ -29,15 +31,27 @@ class LeadsController < ApplicationController
 
   def update
     if @lead.update(lead_params)
+      LeadMailer.with(lead: @lead, admin: current_user).lead_update.deliver_later
       redirect_to @lead
     else
-      render :edit
+      render 'edit'
     end
   end
 
   def destroy
     @lead.destroy
+    LeadMailer.with(lead: @lead, admin: current_user).lead_deleted.deliver_later
     redirect_to leads_path
+  end
+
+  def approve
+    @lead = Lead.find(params[:lead_id])
+    if @lead.toggle!(:is_sale) # rubocop:disable Rails/SkipsModelValidations
+      LeadMailer.with(lead: @lead, admin: current_user).lead_status.deliver_later
+      redirect_to new_project_path
+    else
+      redirect_to leads_path
+    end
   end
 
   private

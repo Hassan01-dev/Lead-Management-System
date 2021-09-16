@@ -1,7 +1,6 @@
 <section class="form-auth auth-user">
-  <%= form_with scope: :lead, url: leads_path, remote: true do |f| %>
+  <%= form_with model: lead, local: true do |f| %>
     <%= render "devise/shared/error_messages", resource: lead %>
-    <%# <%= render "devise/shared/error_messages", resource: client %>
 
     <h3 class="h3 mb-3 font-weight-normal">Lead Info</h3>
     <%= f.text_field :lead_name, autofocus: true, class: "form-control", placeholder: "Lead Name", required:true %>

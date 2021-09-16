@@ -1,0 +1,7 @@
+<td><%= link_to 'Convert To Sale', lead_approve_path(lead),
+    data: { confirm: 'Are you sure?' }, class: "btn btn-secondary" %></td>
+
+<td><%= link_to 'Edit', edit_lead_path(lead), class: "btn btn-secondary" %></td>
+<td><%= link_to 'Delete', lead_path(lead),
+      method: :delete,
+      data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></td>

@@ -1,0 +1,8 @@
+<h1>Phase Status Changed</h1>
+
+<p>
+  Status of a Phase which is Assigned to <b><%= @phase.user.user_name %></b>
+</p>
+
+<p>has been changed to approved by : <%= @admin.user_name %></p>
+<p>For More detail about Phase visit <%= link_to 'Link', phase_url(@phase) %> </p>

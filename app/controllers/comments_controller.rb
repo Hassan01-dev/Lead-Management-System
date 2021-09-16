@@ -17,6 +17,7 @@ class CommentsController < ApplicationController
     @comment = @phase.comments.build(comment_params)
     @comment.user = current_user
     if @comment.save
+      CommentMailer.with(comment: @comment, user: current_user).comment_create.deliver_later
       redirect_to phase_path(@phase)
     else
       render new
@@ -27,6 +28,7 @@ class CommentsController < ApplicationController
 
   def update
     if @comment.update(comment_params)
+      CommentMailer.with(comment: @comment, user: current_user).comment_edit.deliver_later
       redirect_to phase_path(@comment.phase)
     else
       render :edit
@@ -36,6 +38,7 @@ class CommentsController < ApplicationController
   def destroy
     @phase = Comment.find(params[:id]).phase
     @comment.destroy
+    CommentMailer.with(comment: @comment, user: current_user).comment_deleted.deliver_later
     redirect_to phase_path(@phase)
   end
 

@@ -1,0 +1,11 @@
+<h1>Phase Created</h1>
+
+<p>
+  A Phase has been created by <b><%= @admin.user_name%></b> for a lead associated to : <%= @user.user_name%>
+</p>
+<ul>
+  <li>Lead Name: <%= @lead.lead_name %></li>
+  <li>Lead Type: <%= @lead.lead_type %></li>
+</ul>
+
+<p>For More detail about the phase, visit <%= link_to 'Link', phase_url(@phase) %> </p>

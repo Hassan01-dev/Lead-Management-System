@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :projects, only: %i[index new create]
   get '/dashboard', to: 'leads#index', as: 'dashboard'
   resources :leads do
+    get '/approve', to: 'leads#approve', as: 'approve'
     resources :phases, shallow: true do
       get '/add_engineer', to: 'phases#add_engineer', as: 'add_engineer'
       get '/approve', to: 'phases#approve', as: 'approve'
@@ -10,7 +12,7 @@ Rails.application.routes.draw do
     end
   end
   # root to: 'dashboard#login'
-  root to: redirect('/users/sign_in')
+  root to: redirect('/dashboard')
   devise_for :users
 
   resources :users
