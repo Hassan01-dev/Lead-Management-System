@@ -1,0 +1,29 @@
+// Place all the styles related to the comments controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.form-auth{
+  max-width: 25%;
+
+  .form-control {
+    position: relative;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 10px 0px;
+    width: 90%
+  }
+  .form-control:focus {
+    z-index: 2;
+  }
+
+  .btn{
+    margin-top: 10px;
+    width: 90%;
+  }
+}
+
+.flex_space_between{
+  display: flex;
+  justify-content: space-between;
+  margin-right: 10%;
+}

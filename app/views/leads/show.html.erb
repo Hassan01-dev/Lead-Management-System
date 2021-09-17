@@ -1,6 +1,8 @@
-<%= render "lead_details", lead: @lead %>
+<div class="d-flex show_container">
+  <%= render "lead_details", lead: @lead %>
+  <%= render "client_details", lead: @lead %>
+</div>
 
-<%= render "client_details", lead: @lead %>
 <% if current_user %>
   <% if current_user.has_role? :BD %>
     <%= link_to 'Create Phase', new_lead_phase_path(@lead),class: "btn btn-primary" %>

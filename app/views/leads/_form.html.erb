@@ -2,11 +2,11 @@
   <%= form_with model: lead, local: true do |f| %>
     <%= render "devise/shared/error_messages", resource: lead %>
 
-    <h3 class="h3 mb-3 font-weight-normal">Lead Info</h3>
+    <h4 class="h4 mb-3 font-weight-normal">Lead Info</h4>
     <%= f.text_field :lead_name, autofocus: true, class: "form-control", placeholder: "Lead Name", required:true %>
     <%= f.select :lead_type, ['test', 'interview'],{ prompt: "Please select Lead Type"}, autofocus: true, class: "form-control", selected: lead.lead_type %>
     <%= f.text_field :platform_used, autofocus: true, class: "form-control", placeholder: "Platform" %>
-    <h3 class="h3 mb-3 font-weight-normal">Client Info</h3>
+    <h4 class="h4 mb-3 font-weight-normal">Client Info</h4>
     <%= f.text_field :client_name, autofocus: true, class: "form-control", placeholder: "Client Name", required:true%>
     <%= f.text_field :client_address, autofocus: true, class: "form-control", placeholder: "Client Address"%>
     <%= f.email_field :client_email, autofocus: true, class: "form-control", placeholder: "Client Email",required:true %>

@@ -1,9 +1,9 @@
-<h1>Leads</h1>
+<h2>Leads</h2>
 <%= paginate @leads %>
 <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">Sr.</th>
       <th scope="col">Lead Name</th>
       <th scope="col">Lead Type</th>
       <th scope="col">Platform</th>
@@ -17,10 +17,12 @@
   </tr>
   </thead>
   <tbody>
+    <% @id = 0 %>
     <% @leads.each do |lead| %>
       <% if !lead.is_sale %>
+        <% @id += 1 %>
         <tr>
-          <th scope="row">*</th>
+          <th scope="row"><%= @id %></th>
           <td><%= lead.lead_name %></td>
           <td><%= lead.lead_type %></td>
           <td><%= lead.platform_used %></td>

@@ -1,6 +1,6 @@
 <% if !phase.approved %>
   <td><%= link_to 'Approve', phase_approve_path(phase),
-      data: { confirm: 'Are you sure?' }, class: "btn btn-secondary" %></td>
+      data: { confirm: 'Are you sure?' }, class: "btn btn-info" %></td>
 <% else %>
   <td></td>
 <% end %>

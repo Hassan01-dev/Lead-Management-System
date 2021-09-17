@@ -1,3 +1,23 @@
 // Place all the styles related to the users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.pagination {
+  span{
+    padding: 5px;
+  }
+}
+
+.lead_detail{
+  flex-basis: 20%;
+}
+
+.client_detail{
+  flex-basis: 25%;
+  padding-left: 10%;
+  border-left: 0.5px solid grey;
+}
+
+.show_container{
+  margin-bottom: 30px;
+}
