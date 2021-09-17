@@ -1,20 +1,7 @@
-<div>
-  <h1>Lead Detial</h1>
-  <div>
-    <h3>Lead Name : </h3>
-    <p><%= @lead.lead_name%></p>
-  </div>
-  <div>
-    <h3>Lead Type : </h3>
-    <p><%= @lead.lead_type%></p>
-  </div>
-  <div>
-    <h3>Platform : </h3>
-    <p><%= @lead.platform_used%></p>
-  </div>
-
-  <div>
-    <h3>Owner</h3>
-    <p><%= @lead.user.user_name%></p>
-  </div>
+<div class="lead_detail">
+  <h3>Lead Detial</h3>
+  <p>Lead Name : <%= @lead.lead_name%></p>
+  <p>Lead Name : <%= @lead.lead_type%></p>
+  <p>Platform :<%= @lead.platform_used%></p>
+  <p>Owner : <%= @lead.user.user_name%></p>
 </div>

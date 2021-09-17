@@ -1,20 +1,7 @@
-<div>
-  <h2>Client Information</h2>
-
-  <div>
-    <h3>Client Name :</h3>
-    <p><%= @lead.client_name%></p>
-  </div>
-  <div>
-    <h3>Client Email : </h3>
-    <p><%= @lead.client_email%></p>
-  </div>
-  <div>
-    <h3>Client Address : </h3>
-    <p><%= @lead.client_address%></p>
-  </div>
-  <div>
-    <h3>Client Contact No : </h3>
-    <p><%= @lead.client_contact%></p>
-  </div>
+<div class="client_detail">
+  <h3>Client Information</h3>
+  <p>Client Name : <%= @lead.client_name%></p>
+  <p>Client Email :<%= @lead.client_email%></p>
+  <p>Client Address<%= @lead.client_address%></p>
+  <p>Client Contact No : <%= @lead.client_contact%></p>
 </div>

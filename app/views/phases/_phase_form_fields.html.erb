@@ -12,27 +12,24 @@
   </div>
 <% end %>
 
-<h3 class="h3 mb-3 font-weight-normal">Phase Details</h3>
-
 <%= f.label :phase_type %>:
 <%= f.select :phase_type, ['test', 'interview'],{ prompt: "Please select Phase Type"}, autofocus: true, class: "form-control", selected: @phase.phase_type %>
 
-<div>
+<div class='flex_space_between'>
   <%= f.label :start_date %>:
-  <%= f.date_select :start_date, autofocus: true, class: "form-control" %>
+  <div><%= f.date_select :start_date, autofocus: true, class: "form-control" %></div>
 </div>
-<div>
+<div class="flex_space_between">
   <%= f.label :end_date %>:
-  <%= f.date_select :end_date, autofocus: true, class: "form-control" %>
+  <div class><%= f.date_select :end_date, autofocus: true, class: "form-control" %></div>
 </div>
 <div>
-  <%= f.label :Select_Technical_Manager%>:
   <%= f.collection_select :user_id, all_tech_manager, :id, :user_name,{ prompt: "Please select Technical Manager"}, autofocus: true, class: "form-control" %>
 </div>
 <% if params[:id] %>
   <div>
     <%= f.label :approved %>:
-    <%= f.check_box :approved %>
+    <%= f.check_box :approved, class: 'checkbox' %>
   </div>
 <% end %>
 

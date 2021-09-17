@@ -1,4 +1,11 @@
-.form-auth {
+// .form-auth {
+//   // .checkbox {
+//   //   font-weight: 400;
+//   // }
+
+// }
+
+.form-auth-devise {
   width: 100%;
   width: fit-content;
   padding: 15px;
@@ -7,9 +14,6 @@
   border: 0.5px solid grey;
   border-radius: 15px;
 
-  .checkbox {
-    font-weight: 400;
-  }
   .form-control {
     position: relative;
     box-sizing: border-box;
@@ -36,12 +40,7 @@
   }
 }
 
-.auth-user{
+.auth-user-devise{
   max-width: 360px !important;
   width: auto !important;
-}
-
-.role_select{
-  margin-top: 15px;
-  text-align: left;
 }

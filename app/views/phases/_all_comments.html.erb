@@ -1,0 +1,10 @@
+<div class="flex_space_between">
+  <h4>Comments</h4>
+  <div class="comment_button">
+    <% if current_user %>
+      <%= link_to 'Add Comment', new_phase_comment_path(@phase) , class: "btn btn-primary" %>
+    <% end %>
+    <%= render 'shared/back_navigation', path: lead_phases_path(@phase.lead)  %>
+  </div>
+</div>
+<%= render  @phase.comments %>

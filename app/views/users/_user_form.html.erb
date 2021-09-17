@@ -1,8 +1,6 @@
-<section class="form-auth text-center auth-user">
+<section class="form-auth auth-user">
   <%= form_with scope: :user, url: users_path, local: true do |f| %>
     <%= render "devise/shared/error_messages", resource: user %>
-
-    <h1 class="h3 mb-3 font-weight-normal">Create User</h1>
 
     <%= f.text_field :user_name, autofocus: true, autocomplete: "name", class: "form-control", placeholder: "Full Name", required: true %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email address", required: true %>
@@ -11,6 +9,6 @@
       <%= f.password_field :password , class: "form-control", placeholder: "Password (Minimum 6 character)", required: true%>
       <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Confirm Password", required: true %>
     <% end %>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Create User</button><br>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button><br>
   <% end %>
 </section>
