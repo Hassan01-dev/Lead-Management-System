@@ -4,7 +4,7 @@ class Phase < ApplicationRecord
   # serialize :assigned_engineer, Array
   belongs_to :user
   belongs_to :lead
-  has_many :comments # rubocop:disable Rails/HasManyOrHasOneDependent
+  has_many :comments, dependent: :destroy
 
   validates :phase_type, presence: true
   validate :check_validation
