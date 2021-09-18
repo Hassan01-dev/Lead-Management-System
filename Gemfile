@@ -42,6 +42,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # Gem for differnt type of users
 gem 'rolify'
 # Gem for Authentication
+gem "pundit"
+
 gem 'devise'
 # Bootstrap gem
 # gem 'bootstrap-sass', '~> 3.4', '>= 3.4.1
@@ -78,3 +80,4 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'cloudinary'

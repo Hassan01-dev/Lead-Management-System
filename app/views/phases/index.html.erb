@@ -31,7 +31,7 @@
         </td>
 
         <td><%= link_to 'View',phase_path(phase), class: "btn btn-primary" %></td>
-        <% if current_user && (current_user.has_role? :BD) %>
+        <% if policy(Phase).update? %>
           <%= render 'restricted_options', phase: phase %>
         <% end %>
       </tr>

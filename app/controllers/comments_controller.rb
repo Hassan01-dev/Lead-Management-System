@@ -2,12 +2,8 @@
 
 class CommentsController < ApplicationController
   layout 'dashboard'
-  before_action :find_comment, only: %i[show edit update destroy]
-  before_action :find_phase, only: %i[index create]
-
-  def index; end
-
-  def show; end
+  before_action :find_comment, only: %i[show edit update destroy] # rubocop:disable Rails/LexicallyScopedActionFilter
+  before_action :find_phase, only: %i[index create] # rubocop:disable Rails/LexicallyScopedActionFilter
 
   def new
     @comment = Comment.new
@@ -18,17 +14,17 @@ class CommentsController < ApplicationController
     @comment.user = current_user
     if @comment.save
       CommentMailer.with(comment: @comment, user: current_user).comment_create.deliver_later
+      flash[:success] = 'Comment Created Successfully.'
       redirect_to phase_path(@phase)
     else
       render new
     end
   end
 
-  def edit; end
-
   def update
     if @comment.update(comment_params)
       CommentMailer.with(comment: @comment, user: current_user).comment_edit.deliver_later
+      flash[:notice] = 'Comment Updated Successfully.'
       redirect_to phase_path(@comment.phase)
     else
       render :edit
@@ -39,6 +35,7 @@ class CommentsController < ApplicationController
     @phase = Comment.find(params[:id]).phase
     CommentMailer.with(comment: @comment, user: current_user).comment_deleted.deliver_later
     @comment.destroy
+    flash[:alert] = 'Comment Deleted Successfully.'
     redirect_to phase_path(@phase)
   end
 

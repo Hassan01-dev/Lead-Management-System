@@ -1,11 +1,16 @@
 <% if !phase.approved %>
-  <td><%= link_to 'Approve', phase_approve_path(phase),
-      data: { confirm: 'Are you sure?' }, class: "btn btn-info" %></td>
+  <% if (phase.end_date - Date.current).to_i.negative? %>
+    <td><%= link_to 'Expired', phase_approve_path(phase),
+        data: { confirm: 'Are you sure?' }, class: "btn btn-warning" %></td>
+  <% else %>
+    <td><%= link_to 'Approve', phase_approve_path(phase),
+        data: { confirm: 'Are you sure?' }, class: "btn btn-info" %></td>
+  <% end %>
 <% else %>
-  <td></td>
+  <td><%= link_to 'Approved', '', class: "btn btn-success" %></td>
 <% end %>
 
-<td><%= link_to 'Add Engineer', phase_add_engineer_path(phase), class: "btn btn-success" %></td>
+<td><%= link_to 'Add Engineer', phase_add_engineer_path(phase), class: "btn btn-secondary" %></td>
 <td><%= link_to 'Edit', edit_phase_path(phase), class: "btn btn-secondary" %></td>
 <td><%= link_to 'Delete', phase_path(phase),
       method: :delete,
