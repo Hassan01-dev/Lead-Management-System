@@ -11,11 +11,8 @@
   <% end %>
 
 <div>
-  <% if current_user == comment.user or current_user.has_role? :BD %>
-    <%= link_to 'Edit', edit_comment_path(comment), class: "btn btn-secondary" %>
-    <%= link_to 'Delete', comment_path(comment),
-          method: :delete,
-          data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+  <% if current_user %>
+    <%= render 'comments/restricted_options', comment: comment %>
   <% end %>
 </div>
 <hr>

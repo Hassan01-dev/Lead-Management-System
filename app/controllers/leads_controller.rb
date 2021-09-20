@@ -3,35 +3,35 @@
 class LeadsController < ApplicationController
   layout 'dashboard'
 
-  before_action :find_lead, only: %i[show edit update destroy]
+  before_action :find_lead, only: %i[show edit update destroy] # rubocop:disable Rails/LexicallyScopedActionFilter
 
   def index
-    @leads = Lead.order(:platform_used).page(params[:page]).per(10)
+    @leads = Lead.where(is_sale: false).page(params[:page]).per(10)
   end
 
   def new
     @lead = Lead.new
+    authorize @lead
   end
 
   def create
     @lead = Lead.new(lead_params)
+    authorize @lead
     @lead.user = current_user
     @lead.is_sale = false
     if @lead.save
       LeadMailer.with(lead: @lead).lead_created.deliver_later
+      flash[:success] = 'Lead Created Successfully.'
       redirect_to @lead
     else
       render 'new'
     end
   end
 
-  def show; end
-
-  def edit; end
-
   def update
     if @lead.update(lead_params)
       LeadMailer.with(lead: @lead, admin: current_user).lead_update.deliver_later
+      flash[:notice] = 'Lead Updated Successfully.'
       redirect_to @lead
     else
       render 'edit'
@@ -41,6 +41,7 @@ class LeadsController < ApplicationController
   def destroy
     @lead.destroy
     LeadMailer.with(lead: @lead, admin: current_user).lead_deleted.deliver_later
+    flash[:alert] = 'Lead Deleted Successfully.'
     redirect_to leads_path
   end
 
@@ -48,7 +49,7 @@ class LeadsController < ApplicationController
     @lead = Lead.find(params[:lead_id])
     if @lead.toggle!(:is_sale) # rubocop:disable Rails/SkipsModelValidations
       LeadMailer.with(lead: @lead, admin: current_user).lead_status.deliver_later
-      redirect_to new_project_path
+      redirect_to new_project_path(@lead)
     else
       redirect_to leads_path
     end
@@ -63,5 +64,6 @@ class LeadsController < ApplicationController
 
   def find_lead
     @lead = Lead.find(params[:id])
+    authorize @lead
   end
 end

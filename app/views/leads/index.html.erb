@@ -19,21 +19,19 @@
   <tbody>
     <% @id = 0 %>
     <% @leads.each do |lead| %>
-      <% if !lead.is_sale %>
-        <% @id += 1 %>
-        <tr>
-          <th scope="row"><%= @id %></th>
-          <td><%= lead.lead_name %></td>
-          <td><%= lead.lead_type %></td>
-          <td><%= lead.platform_used %></td>
-          <td><%= lead.client_name %></td>
-          <td><%= lead.user.user_name %></td>
-          <td><%= link_to 'View', lead_path(lead),class: "btn btn-primary" %></td>
-          <% if current_user && (current_user.has_role? :BD) %>
-            <%= render 'restricted_options', lead: lead %>
-          <% end %>
-        </tr>
-      <% end %>
+    <% @id += 1 %>
+      <tr>
+        <th scope="row"><%= @id %></th>
+        <td><%= lead.lead_name %></td>
+        <td><%= lead.lead_type %></td>
+        <td><%= lead.platform_used %></td>
+        <td><%= lead.client_name %></td>
+        <td><%= lead.user.user_name %></td>
+        <td><%= link_to 'View', lead_path(lead),class: "btn btn-primary" %></td>
+        <% if policy(Lead).update? %>
+          <%= render 'restricted_options', lead: lead %>
+        <% end %>
+      </tr>
     <% end %>
   </tbody>
 </table>
