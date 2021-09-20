@@ -54,6 +54,15 @@ class PhasesController < ApplicationController
     redirect_to lead_phases_path(@phase.lead)
   end
 
+  def accepted
+    @phase = Phase.find(params[:phase_id])
+    if @phase.toggle!(:is_accepted) # rubocop:disable Rails/SkipsModelValidations
+      redirect_to phase_path(@phase)
+    else
+      redirect_to lead_phases_path(@phase.lead)
+    end
+  end
+
   def add_engineer; end
 
   private

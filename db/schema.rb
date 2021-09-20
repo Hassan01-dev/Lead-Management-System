@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2021_09_09_055250) do
     t.date "start_date", null: false
     t.date "end_date", null: false
     t.boolean "approved", default: false
+    t.boolean "is_accepted", default: false
     t.jsonb "assigned_engineer"
     t.bigint "user_id"
     t.bigint "lead_id"

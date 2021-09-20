@@ -63,7 +63,7 @@ class PhaseMailer < ApplicationMailer
     @phase = params[:phase]
     @lead = @phase.lead
     @admin = params[:admin]
-    mail to: @lead.user.email,
+    mail to: @phase.user.email,
          subject: 'Phase Assigned'
   end
 end

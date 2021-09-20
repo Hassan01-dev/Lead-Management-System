@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :phases, shallow: true do
       get '/add_engineer', to: 'phases#add_engineer', as: 'add_engineer'
       get '/approve', to: 'phases#approve', as: 'approve'
+      get '/accepted', to: 'phases#accepted', as: 'accepted'
       resources :comments, shallow: true
     end
   end

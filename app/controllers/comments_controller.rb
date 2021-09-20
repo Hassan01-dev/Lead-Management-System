@@ -5,9 +5,14 @@ class CommentsController < ApplicationController
   before_action :find_comment, only: %i[show edit update destroy] # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :find_phase, only: %i[new index create] # rubocop:disable Rails/LexicallyScopedActionFilter
 
-  def new
-    if (current_user == User.find(@phase.user_id)) || (@phase.assigned_engineer.include? current_user.id) || (current_user.has_role? :BD)
-      @comment = Comment.new
+  def new # rubocop:disable Metrics/AbcSize
+    if @phase.is_accepted || (current_user.has_role? :BD)
+      if (current_user == User.find(@phase.user_id)) || (@phase.assigned_engineer.include? current_user.id)
+        @comment = Comment.new
+      else
+        flash[:alert] = 'You are not authorized to perform this action'
+        redirect_to phase_path(@phase)
+      end
     else
       flash[:alert] = 'You are not authorized to perform this action'
       redirect_to phase_path(@phase)
