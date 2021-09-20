@@ -11,6 +11,8 @@ Rails.application.routes.draw do
       resources :comments, shallow: true
     end
   end
+
+  get '/comments/:id/delete_image/', to: 'comments#delete_image', as: 'delete_image'
   # root to: 'dashboard#login'
   root to: redirect('/dashboard')
   devise_for :users

@@ -5,10 +5,8 @@
     <%= f.text_field :user_name, autofocus: true, autocomplete: "name", class: "form-control", placeholder: "Full Name", required: true %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email address", required: true %>
     <%= f.select :user_role, ['admin', 'BD', 'TM', 'engineer'],{ prompt: "Please select User Role" }, autofocus: true, class: "form-control", selected: user.user_role %>
-    <% if !user.id %>
-      <%= f.password_field :password , class: "form-control", placeholder: "Password (Minimum 6 character)", required: true%>
-      <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Confirm Password", required: true %>
-    <% end %>
+    <%= f.password_field :password , class: "form-control", placeholder: "Password (Minimum 6 character)", required: true%>
+    <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Confirm Password", required: true %>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button><br>
   <% end %>
 </section>

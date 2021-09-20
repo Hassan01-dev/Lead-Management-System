@@ -1,5 +1,5 @@
 <b><p class="mb-3 font-weight-normal">Comment Description</p></b>
-<%= f.text_area :comment_text, autofocus: true, rows: 10, cols: 60, class: "form-control", placeholder: "Comment Description", required:true %>
+<%= f.text_area :comment_text, autofocus: true, rows: 10, cols: 60, class: "form-control", placeholder: "Comment Description",accept: 'image/jpeg', required:true %>
 <%= f.file_field :images, multiple: :true %>
 
 <button class="btn btn-lg btn-primary btn-block" type="submit">Add Comment</button><br>

@@ -1,13 +1,17 @@
-<section class="form-auth auth-user">
-  <% if comment.id %>
-    <% @phase = Comment.find(params[:id]).phase %>
-    <%= form_with model: comment, remote: true do |f| %>
-      <% render 'comment_form_fields', f: f%>
+<div class="d-flex">
+  <section class="form-auth auth-user">
+    <% if comment.id %>
+      <% @phase = Comment.find(params[:id]).phase %>
+      <%= form_with model: comment, remote: true do |f| %>
+        <% render 'comment_form_fields', f: f%>
+      <% end %>
+    <% else %>
+      <% @phase = Phase.find(params[:phase_id]) %>
+      <%= form_with( model: [@phase, @phase.comments.build], remote: true ) do |f| %>
+        <% render 'comment_form_fields', f: f%>
+      <% end %>
     <% end %>
-  <% else %>
-    <% @phase = Phase.find(params[:phase_id]) %>
-    <%= form_with( model: [@phase, @phase.comments.build], remote: true ) do |f| %>
-      <% render 'comment_form_fields', f: f%>
-    <% end %>
-  <% end %>
-</section>
+  </section>
+
+  <%= render 'comments/comment_images_edit', comment: @comment %>
+</div>
