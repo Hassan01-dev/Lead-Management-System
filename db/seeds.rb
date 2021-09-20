@@ -47,13 +47,13 @@ end
 
 15.times do
   Phase.create!(phase_type: 'interview', start_date: (Date.current + rand(0..5)), end_date: (Date.current + rand(10..15)), # rubocop:disable Layout/LineLength
-                lead_id: rand(1..15), user_id: rand(4..8),
+                lead_id: rand(1..15), user_id: rand(4..8), is_accepted: true,
                 assigned_engineer: Array.new(rand(0..5)) { rand(9..18) })
 end
 
 10.times do
   Phase.create!(phase_type: 'test', start_date: (Date.current + rand(0..5)), end_date: (Date.current + rand(10..15)),
-                lead_id: rand(1..15), user_id: rand(4..8),
+                lead_id: rand(1..15), user_id: rand(4..8), is_accepted: true,
                 assigned_engineer: Array.new(rand(0..5)) { rand(9..18) })
 end
 
