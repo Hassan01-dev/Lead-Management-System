@@ -1,0 +1,7 @@
+<h1>Phase Expired</h1>
+
+<p>
+  A Phase which has been assigned to <b><%= @user.user_name%></b> is expired.
+</p>
+
+<p>For More detail about the phase, visit <%= link_to 'Link', lead_phases_url(@phase.lead) %> </p>

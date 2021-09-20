@@ -22,6 +22,7 @@ class PhasesController < ApplicationController
     if @phase.save
       PhaseMailer.with(phase: @phase, admin: current_user).phase_created.deliver_later
       PhaseMailer.with(phase: @phase, admin: current_user).phase_assigned_TM.deliver_later
+      PhaseExpireMailJob.set(wait: (@phase.end_date - Date.current).days).perform_later(@phase)
       flash[:success] = 'Phase Created Successfully.'
       redirect_to @phase
     else
@@ -53,6 +54,15 @@ class PhasesController < ApplicationController
     redirect_to lead_phases_path(@phase.lead)
   end
 
+  def accepted
+    @phase = Phase.find(params[:phase_id])
+    if @phase.toggle!(:is_accepted) # rubocop:disable Rails/SkipsModelValidations
+      redirect_to phase_path(@phase)
+    else
+      redirect_to lead_phases_path(@phase.lead)
+    end
+  end
+
   def add_engineer; end
 
   private
@@ -68,6 +78,7 @@ class PhasesController < ApplicationController
 
   def find_phase_for_custom_action
     @phase = Phase.find(params[:phase_id])
+    authorize @phase, :update?
   end
 
   def find_lead

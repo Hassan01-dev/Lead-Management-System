@@ -13,7 +13,7 @@
 <% end %>
 
 <%= f.label :phase_type %>:
-<%= f.select :phase_type, ['test', 'interview'],{ prompt: "Please select Phase Type"}, autofocus: true, class: "form-control", selected: @phase.phase_type %>
+<%= f.select :phase_type, ['test project', 'interview'],{ prompt: "Please select Phase Type"}, autofocus: true, class: "form-control", selected: @phase.phase_type %>
 
 <div class='flex_space_between'>
   <%= f.label :start_date %>:

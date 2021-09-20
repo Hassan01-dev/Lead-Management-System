@@ -4,4 +4,5 @@
   A Phase has been assigned to you, by <b><%= @admin.user_name%></b>.
 </p>
 
+<p>To accept the invitation visit <%= link_to 'Link', phase_accepted_url(@phase) %>
 <p>For More detail about the phase, visit <%= link_to 'Link', phase_url(@phase) %> </p>

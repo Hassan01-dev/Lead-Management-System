@@ -8,9 +8,12 @@ Rails.application.routes.draw do
     resources :phases, shallow: true do
       get '/add_engineer', to: 'phases#add_engineer', as: 'add_engineer'
       get '/approve', to: 'phases#approve', as: 'approve'
+      get '/accepted', to: 'phases#accepted', as: 'accepted'
       resources :comments, shallow: true
     end
   end
+
+  get '/comments/:id/delete_image/', to: 'comments#delete_image', as: 'delete_image'
   # root to: 'dashboard#login'
   root to: redirect('/dashboard')
   devise_for :users

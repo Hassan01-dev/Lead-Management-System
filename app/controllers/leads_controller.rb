@@ -45,12 +45,19 @@ class LeadsController < ApplicationController
     redirect_to leads_path
   end
 
-  def approve
+  def approve # rubocop:disable Metrics/AbcSize
     @lead = Lead.find(params[:lead_id])
-    if @lead.toggle!(:is_sale) # rubocop:disable Rails/SkipsModelValidations
-      LeadMailer.with(lead: @lead, admin: current_user).lead_status.deliver_later
-      redirect_to new_project_path(@lead)
+    authorize @lead, :update?
+    if check_lead
+      if @lead.toggle!(:is_sale) # rubocop:disable Rails/SkipsModelValidations
+        LeadMailer.with(lead: @lead, admin: current_user).lead_status.deliver_later
+        flash[:notice] = 'Lead Status Changed Successfully.'
+        redirect_to new_project_path(@lead)
+      else
+        redirect_to leads_path
+      end
     else
+      flash[:alert] = 'Some Phase for this Lead is not approved.'
       redirect_to leads_path
     end
   end
@@ -65,5 +72,15 @@ class LeadsController < ApplicationController
   def find_lead
     @lead = Lead.find(params[:id])
     authorize @lead
+  end
+
+  def check_lead
+    @phases = @lead.phases
+    @phases.each do |phase|
+      next unless phase.approved == false
+
+      return false
+    end
+    true
   end
 end

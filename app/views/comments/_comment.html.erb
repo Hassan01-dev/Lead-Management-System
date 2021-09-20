@@ -1,14 +1,6 @@
 <b><p><%= comment.user.user_name %></p></b>
 <p><%= comment.comment_text %></td>
-<% if comment.images.attached? %>
-    <ul class="comment_images d-flex">
-      <% comment.images.each do |image| %>
-        <li>
-          <%= image_tag(image, width: 300) %>
-        </li>
-      <% end %>
-    </ul>
-  <% end %>
+<%= render 'comments/comment_images_show', comment: comment %>
 
 <div>
   <% if current_user %>

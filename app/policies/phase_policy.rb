@@ -25,7 +25,7 @@ class PhasePolicy < ApplicationPolicy
 
   def update?
     if @user
-      @user.has_role? :admin
+      @user.has_role? :BD
     else
       false
     end

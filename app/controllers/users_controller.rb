@@ -24,7 +24,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit
+    check_user_auth
+  end
+
   def update
+    check_user_auth
     if @user.update(user_params)
       redirect_to users_path
     else
@@ -33,6 +38,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    authorize @user
     @user.destroy
     redirect_to users_path
   end
@@ -45,6 +51,11 @@ class UsersController < ApplicationController
 
   def find_user
     @user = User.find(params[:id])
-    authorize @user
+  end
+
+  def check_user_auth
+    if (current_user && (current_user.id != @user.id)) || !current_user
+      authorize @user
+    end
   end
 end
