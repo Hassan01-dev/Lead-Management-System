@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # Preview all emails at http://localhost:3000/rails/mailers/comment_mailer
 class CommentMailerPreview < ActionMailer::Preview
-
   # Preview this email at http://localhost:3000/rails/mailers/comment_mailer/comment_create
   def comment_create
     CommentMailer.with(comment: Comment.first, user: User.last).comment_create
@@ -15,5 +16,4 @@ class CommentMailerPreview < ActionMailer::Preview
   def comment_deleted
     CommentMailer.with(comment: Comment.first, user: User.last).comment_deleted
   end
-
 end

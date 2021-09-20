@@ -5,7 +5,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, :confirmable
   has_many :projects # rubocop:disable Rails/HasManyOrHasOneDependent
   has_many :leads # rubocop:disable Rails/HasManyOrHasOneDependent
   has_many :comments # rubocop:disable Rails/HasManyOrHasOneDependent

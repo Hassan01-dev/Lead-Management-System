@@ -37,8 +37,8 @@ class CommentsController < ApplicationController
 
   def destroy
     @phase = Comment.find(params[:id]).phase
-    @comment.destroy
     CommentMailer.with(comment: @comment, user: current_user).comment_deleted.deliver_later
+    @comment.destroy
     redirect_to phase_path(@phase)
   end
 

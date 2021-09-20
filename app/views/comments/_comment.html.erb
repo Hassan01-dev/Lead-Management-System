@@ -11,7 +11,7 @@
   <% end %>
 
 <div>
-  <% if current_user == comment.user %>
+  <% if current_user == comment.user or current_user.has_role? :BD %>
     <%= link_to 'Edit', edit_comment_path(comment), class: "btn btn-secondary" %>
     <%= link_to 'Delete', comment_path(comment),
           method: :delete,

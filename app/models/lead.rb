@@ -3,7 +3,7 @@
 class Lead < ApplicationRecord
   belongs_to :user
   has_one :project # rubocop:disable Rails/HasManyOrHasOneDependent
-  has_many :phases # rubocop:disable Rails/HasManyOrHasOneDependent
+  has_many :phases,  dependent: :destroy
 
   validates :lead_name, presence: true
   validates :platform_used, presence: true, length: { minimum: 3 }
