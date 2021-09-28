@@ -17,11 +17,11 @@
 
 <div class='flex_space_between'>
   <%= f.label :start_date %>:
-  <div><%= f.date_select :start_date, autofocus: true, class: "form-control" %></div>
+  <div><%= f.date_select :start_date, start_year: Date.current().year, autofocus: true, class: "form-control" %></div>
 </div>
 <div class="flex_space_between">
   <%= f.label :end_date %>:
-  <div class><%= f.date_select :end_date, autofocus: true, class: "form-control" %></div>
+  <div class><%= f.date_select :end_date, start_year: Date.current().year ,autofocus: true, class: "form-control" %></div>
 </div>
 <div>
   <%= f.collection_select :user_id, all_tech_manager, :id, :user_name,{ prompt: "Please select Technical Manager"}, autofocus: true, class: "form-control" %>

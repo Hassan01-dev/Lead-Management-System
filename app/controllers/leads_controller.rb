@@ -42,20 +42,18 @@ class LeadsController < ApplicationController
     @lead.destroy
     LeadMailer.with(lead: @lead, admin: current_user).lead_deleted.deliver_later
     flash[:alert] = 'Lead Deleted Successfully.'
-    redirect_to leads_path
+
+    respond_to do |format|
+      format.html { redirect_to leads_path }
+      format.js
+    end
   end
 
-  def approve # rubocop:disable Metrics/AbcSize
+  def approve
     @lead = Lead.find(params[:lead_id])
     authorize @lead, :update?
     if check_lead
-      if @lead.toggle!(:is_sale) # rubocop:disable Rails/SkipsModelValidations
-        LeadMailer.with(lead: @lead, admin: current_user).lead_status.deliver_later
-        flash[:notice] = 'Lead Status Changed Successfully.'
-        redirect_to new_project_path(@lead)
-      else
-        redirect_to leads_path
-      end
+      redirect_to new_project_path(lead_id: @lead.id)
     else
       flash[:alert] = 'Some Phase for this Lead is not approved.'
       redirect_to leads_path

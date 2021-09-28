@@ -4,14 +4,14 @@
         data: { confirm: 'Are you sure?' }, class: "btn btn-warning" %></td>
   <% else %>
     <td><%= link_to 'Approve', phase_approve_path(phase),
-        data: { confirm: 'Are you sure?' }, class: "btn btn-info" %></td>
+        data: { confirm: 'Are you sure?' }, class: "btn btn-info",id: "phase_approve_#{phase.id}" ,remote: true, method: :patch %></td>
   <% end %>
 <% else %>
-  <td><%= link_to 'Approved', '', class: "btn btn-success" %></td>
+  <td><button class="btn btn-success" disabled>Approved</button></td>
 <% end %>
 
 <td><%= link_to 'Edit', edit_phase_path(phase), class: "btn btn-secondary" %></td>
 <td><%= link_to 'Delete', phase_path(phase),
       method: :delete,
-      data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+      data: { confirm: 'Are you sure?' }, class: "btn btn-danger", remote: true %>
       </td>

@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
   end
 
   def new
-    @lead = Lead.find(params[:format])
+    @lead = Lead.find(params[:lead_id])
     @project = Project.new(project_name: @lead.lead_name, lead_id: @lead.id)
     authorize @project
   end
@@ -17,6 +17,11 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
     authorize @project
     if @project.save
+      @lead = @project.lead
+      if @lead.toggle!(:is_sale) # rubocop:disable Rails/SkipsModelValidations
+        LeadMailer.with(lead: @lead, admin: current_user).lead_status.deliver_later
+        flash[:notice] = 'Lead Status Changed Successfully.'
+      end
       redirect_to projects_path
     else
       render 'new'

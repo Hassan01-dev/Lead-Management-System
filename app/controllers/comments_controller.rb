@@ -6,7 +6,9 @@ class CommentsController < ApplicationController
   before_action :find_phase, only: %i[new index create] # rubocop:disable Rails/LexicallyScopedActionFilter
 
   def new # rubocop:disable Metrics/AbcSize
-    if @phase.is_accepted || (current_user.has_role? :BD)
+    if current_user.has_role? :BD
+      @comment = Comment.new
+    elsif @phase.is_accepted
       if (current_user == User.find(@phase.user_id)) || (@phase.assigned_engineer.include? current_user.id)
         @comment = Comment.new
       else
@@ -20,7 +22,7 @@ class CommentsController < ApplicationController
   end
 
   def create # rubocop:disable Metrics/AbcSize
-    if current_user == User.find(@phase.user_id) || (@phase.assigned_engineer.include? current_user.id) || (current_user.has_role? :BD)
+    if current_user == User.find(@phase.user_id) || (@phase.assigned_engineer.include? current_user.id) || (current_user.has_role? :BD) # rubocop:disable Layout/LineLength
       @comment = @phase.comments.build(comment_params)
       @comment.user = current_user
       if @comment.save
@@ -55,16 +57,19 @@ class CommentsController < ApplicationController
 
   def destroy
     @phase = Comment.find(params[:id]).phase
-    CommentMailer.with(comment: @comment, user: current_user).comment_deleted.deliver_later
     @comment.destroy
+    CommentMailer.with(comment: @comment, user: current_user).comment_deleted.deliver_later
     flash[:alert] = 'Comment Deleted Successfully.'
-    redirect_to phase_path(@phase)
+
+    respond_to do |format|
+      format.html { redirect_to phase_path(@phase) }
+      format.js
+    end
   end
 
   def delete_image
     @comment = Comment.find(params[:id])
     @comment.images.where(id: params[:format]).purge
-    redirect_back(fallback_location: edit_comment_path)
   end
 
   private

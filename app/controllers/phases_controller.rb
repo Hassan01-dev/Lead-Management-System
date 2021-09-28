@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class PhasesController < ApplicationController
+class PhasesController < ApplicationController # rubocop:disable Metrics/ClassLength
   layout 'dashboard'
   before_action :find_phase, only: %i[show edit update destroy] # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :find_lead, only: %i[index create]
-  before_action :find_phase_for_custom_action, only: %i[add_engineer approve]
+  before_action :find_phase_for_custom_action, only: %i[add_engineer approve accepted]
 
   def index
     @phases = @lead.phases
@@ -44,18 +44,24 @@ class PhasesController < ApplicationController
     @phase.destroy
     PhaseMailer.with(phase: @phase, admin: current_user).phase_deleted.deliver_later
     flash[:alert] = 'Phase Deleted Successfully.'
-    redirect_to lead_phases_path(@phase.lead)
+    respond_to do |format|
+      format.html { redirect_to lead_phases_path(@phase.lead) }
+      format.js
+    end
   end
 
   def approve
+    authorize @phase, :update?
     if @phase.toggle!(:approved) # rubocop:disable Rails/SkipsModelValidations
       PhaseMailer.with(phase: @phase, admin: current_user).phase_status.deliver_later
     end
-    redirect_to lead_phases_path(@phase.lead)
+    respond_to do |format|
+      format.html { redirect_to lead_phases_path(@phase.lead) }
+      format.js
+    end
   end
 
   def accepted
-    @phase = Phase.find(params[:phase_id])
     if @phase.toggle!(:is_accepted) # rubocop:disable Rails/SkipsModelValidations
       redirect_to phase_path(@phase)
     else
@@ -65,10 +71,48 @@ class PhasesController < ApplicationController
 
   def add_engineer; end
 
+  def add_engineer_to_phase # rubocop:disable Metrics/AbcSize
+    @phase = Phase.find(params[:phase_id])
+    @arr = []
+    @arr << @phase.assigned_engineer if @phase.assigned_engineer
+    @arr << params[:user_id]
+    @phase.assigned_engineer = @arr.flatten.uniq
+    if @phase.save
+      respond_to do |format|
+        format.html { redirect_to phase_add_engineer_path(@phase) }
+        format.js
+      end
+    else
+      flash[:alert] = 'Unknown Error happened'
+      redirect_to phase_add_engineer_path(@phase)
+    end
+  end
+
+  def remove_engineer_from_phase # rubocop:disable Metrics/AbcSize
+    @phase = Phase.find(params[:phase_id])
+    if @phase.assigned_engineer.empty?
+      flash[:alert] = 'There is no one to remove from the list.'
+      redirect_to phase_add_engineer_path(@phase)
+    else
+      @arr = @phase.assigned_engineer
+      @arr.delete(params[:user_id])
+      @phase.assigned_engineer = @arr
+      if @phase.save
+        respond_to do |format|
+          format.html { redirect_to phase_add_engineer_path(@phase) }
+          format.js
+        end
+      else
+        flash[:alert] = 'Unknown Error happened.'
+        redirect_to phase_add_engineer_path(@phase)
+      end
+    end
+  end
+
   private
 
   def phase_params
-    params.require(:phase).permit(:phase_type, :start_date, :end_date, :user_id, :approved, assigned_engineer: [])
+    params.require(:phase).permit(:phase_type, :start_date, :end_date, :user_id)
   end
 
   def find_phase
@@ -78,7 +122,6 @@ class PhasesController < ApplicationController
 
   def find_phase_for_custom_action
     @phase = Phase.find(params[:phase_id])
-    authorize @phase, :update?
   end
 
   def find_lead
