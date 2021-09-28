@@ -1,5 +1,5 @@
 <section class="form-auth auth-user">
-  <%= form_with model: @user, local: true do |f| %>
+  <%= form_for @user, local: true do |f| %>
     <%= render "devise/shared/error_messages", resource: @user %>
 
     <%= f.text_field :user_name, autofocus: true, autocomplete: "name", class: "form-control", placeholder: "Full Name", required: true %>
@@ -9,5 +9,4 @@
     <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Confirm Password" if @user.new_record? %>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button><br>
   <% end %>
-  <%= link_to 'Change Password', password_change_path(user), class: "btn btn-info" %>
 </section>

@@ -66,7 +66,7 @@ class UsersController < ApplicationController
   end
 
   def user_update_password_params
-    params.require(:user).permit(:password, :password_confirmation)
+    params.permit(:password, :password_confirmation)
   end
 
   def find_user
