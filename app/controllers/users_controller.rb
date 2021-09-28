@@ -2,7 +2,9 @@
 
 class UsersController < ApplicationController
   layout 'dashboard'
-  before_action :find_user, only: %i[edit update destroy] # rubocop:disable Rails/LexicallyScopedActionFilter
+  before_action :find_user, only: %i[edit update destroy password_change] # rubocop:disable Rails/LexicallyScopedActionFilter
+  before_action :check_user_auth, only: %i[edit update] # rubocop:disable Rails/LexicallyScopedActionFilter
+
   def index
     @users = User.order(:user_role).page(params[:page]).per(10)
     authorize @users
@@ -24,14 +26,9 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit
-    check_user_auth
-  end
-
   def update
-    check_user_auth
-    if @user.update(user_params)
-      redirect_to users_path
+    if @user.update(user_update_params)
+      redirect_to leads_path
     else
       render :edit
     end
@@ -43,10 +40,33 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
+  def password_change; end
+
+  def password_update
+    @user = current_user
+    if @user.update(user_update_password_params)
+      if current_user.has_role? :admin
+        redirect_to users_path
+      else
+        redirect_to destroy_user_session_path
+      end
+    else
+      render :password_change
+    end
+  end
+
   private
 
   def user_params
     params.require(:user).permit(:user_name, :user_role, :email, :password, :password_confirmation)
+  end
+
+  def user_update_params
+    params.require(:user).permit(:user_name, :user_role, :email)
+  end
+
+  def user_update_password_params
+    params.require(:user).permit(:password, :password_confirmation)
   end
 
   def find_user
@@ -54,8 +74,6 @@ class UsersController < ApplicationController
   end
 
   def check_user_auth
-    if (current_user && (current_user.id != @user.id)) || !current_user
-      authorize @user
-    end
+    authorize @user if current_user && (current_user.id != @user.id)
   end
 end

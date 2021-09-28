@@ -1,12 +1,13 @@
 <section class="form-auth auth-user">
-  <%= form_with scope: :user, url: users_path, local: true do |f| %>
-    <%= render "devise/shared/error_messages", resource: user %>
+  <%= form_with model: @user, local: true do |f| %>
+    <%= render "devise/shared/error_messages", resource: @user %>
 
     <%= f.text_field :user_name, autofocus: true, autocomplete: "name", class: "form-control", placeholder: "Full Name", required: true %>
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email address", required: true %>
-    <%= f.select :user_role, ['admin', 'BD', 'TM', 'engineer'],{ prompt: "Please select User Role" }, autofocus: true, class: "form-control", selected: user.user_role %>
-    <%= f.password_field :password , class: "form-control", placeholder: "Password (Minimum 6 character)", required: true%>
-    <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Confirm Password", required: true %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email address", disabled: !admin? %>
+    <%= f.select :user_role, ['admin', 'BD', 'TM', 'engineer'],{ prompt: "Please select User Role" }, autofocus: true, class: "form-control", selected: user.user_role, disabled: !admin? %>
+    <%= f.password_field :password , class: "form-control", placeholder: "Password (Minimum 6 character)" if @user.new_record? %>
+    <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Confirm Password" if @user.new_record? %>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button><br>
   <% end %>
+  <%= link_to 'Change Password', password_change_path(user), class: "btn btn-info" %>
 </section>

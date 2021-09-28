@@ -1,0 +1,3 @@
+$("#add_engineer_<%= params[:user_id] %>").replaceWith('<%= link_to 'Remove', phase_remove_engineer_from_phase_path(@phase, user_id: params[:user_id]) ,
+        method: :patch, id: "remove_engineer_#{params[:user_id]}",
+        data: { confirm: 'Are you sure?' }, class: "btn btn-danger", remote: true %>')

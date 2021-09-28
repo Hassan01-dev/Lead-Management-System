@@ -3,9 +3,9 @@
   <% if @comment.images.attached? %>
     <ul class="comment_images d-flex">
       <% @comment.images.each do |image| %>
-        <li>
+        <li id="comment_image_<%= image.id %>">
           <%= image_tag(image, width: 300) %>
-          <%= link_to 'Remove Image', delete_image_path(@comment, image), class: "btn btn-danger" if locals[:edit_method] %>
+          <%= link_to 'Remove Image', delete_image_path(@comment, image), class: "btn btn-danger", remote: true, method: :post if locals[:edit_method] %>
         </li>
       <% end %>
     </ul>

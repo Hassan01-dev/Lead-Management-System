@@ -20,7 +20,7 @@
     <% @id = 0 %>
     <% @phases.each do |phase| %>
       <% @id += 1%>
-      <tr>
+      <tr id="phase_<%= phase.id %>">
         <th scope="row"><%= @id %></th>
         <td><%= phase.phase_type %></td>
         <td><%= phase.start_date %></td>
@@ -29,7 +29,7 @@
         <td>
           <%= find_all_engineer_of_phase(phase.assigned_engineer) if phase.assigned_engineer %>
         </td>
-        <td><%= link_to 'Add Engineer', phase_add_engineer_path(phase), class: "btn btn-secondary" if ((phase.is_accepted) && (current_user == phase.user)) || (current_user.has_role? :BD) %></td>
+        <td><%= link_to 'Add Engineer', phase_add_engineer_path(phase), class: "btn btn-secondary", id: "add_engineer_#{phase.id}" if check_add_engineer(phase, current_user) %></td>
         <td><%= link_to 'View',phase_path(phase), class: "btn btn-primary" %></td>
         <% if policy(Phase).update? %>
           <%= render 'restricted_options', phase: phase %>

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
@@ -7,7 +9,7 @@ class ProjectPolicy < ApplicationPolicy
 
   def index?
     if @user
-      @user.has_role? :admin
+      @user.has_role? :BD
     else
       false
     end

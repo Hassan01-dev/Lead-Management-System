@@ -1,13 +1,31 @@
 <%= render 'phase_details'%>
 
-<section class="form-auth auth-user">
-  <%= form_with model: @phase do |f| %>
-  <%= f.select :assigned_engineer, all_engineer.collect {|p| [ p.user_name, p.id] },
-                                                  { :prompt => "Please select"},
-                                                  { :multiple => true, size: 5 } %>
+<section >
 
+  <h2>Add Engineer to Phase</h2>
 
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button><br>
-  <% end %>
-
+  <table class="table table-hover add-engineer-table">
+    <thead>
+      <tr>
+        <th scope="col">User Name</th>
+        <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+        <% all_engineer.each do |x| %>
+          <tr>
+          <td><%= x.user_name %></td>
+          <% if @phase.assigned_engineer.include? x.id.to_s %>
+            <td><%= link_to 'Remove', phase_remove_engineer_from_phase_path(@phase, user_id: x.id) ,
+              id: "remove_engineer_#{x.id}", method: :patch,
+              data: { confirm: 'Are you sure?' }, class: "btn btn-danger", remote: true %></td>
+          <% else %>
+            <td><%= link_to 'Add', phase_add_engineer_to_phase_path(@phase, user_id: x.id) , class: "btn btn-secondary", id: "add_engineer_#{x.id}", method: :patch, remote: true %></td>
+          <% end %>
+        </tr>
+        <% end %>
+    </tbody>
+  </table>
 </section>
+
+<%= render 'shared/back_navigation', path: lead_phases_path(@phase.lead)  %>

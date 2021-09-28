@@ -13,4 +13,12 @@ module PhasesHelper
     all_id_array = arr.delete_if { |x| x == '' }
     all_id_array.map { |x| User.find(x).user_name }
   end
+
+  def check_add_engineer(phase, _user)
+    if phase.approved
+      false
+    else
+      phase.is_accepted && (current_user == phase.user) || BD?
+    end
+  end
 end

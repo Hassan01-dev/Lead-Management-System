@@ -1,11 +1,12 @@
-<b><p><%= comment.user.user_name %></p></b>
-<p><%= comment.comment_text %></td>
-<%= render 'comments/comment_images_show', comment: comment %>
+<div id="comment_<%= comment.id %>">
+  <b><p><%= comment.user.user_name %></p></b>
+  <p><%= comment.comment_text %></td>
+  <%= render 'comments/comment_images_show', comment: comment %>
 
-<div>
-  <% if current_user %>
-    <%= render 'comments/restricted_options', comment: comment %>
-  <% end %>
+  <div>
+    <% if current_user %>
+      <%= render 'comments/restricted_options', comment: comment %>
+    <% end %>
+  </div>
+  <hr>
 </div>
-<hr>
-
