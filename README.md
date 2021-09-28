@@ -16,12 +16,12 @@ This product is aimed at managing sales leads and their process in an organizati
   * rubocop
 
 * Dev Server
-    In Order to rub in the development server, you need to perform following steps
-    Run these commands
-    `bundle`
-    `rails db:migrate` to run all the migrations.
-    You need to run the Seed file in order to create super admin for the first time so, you can run the application smoothly. In order to perform this you need to type this
-    `rails db:seed`
+    * In Order to run the application in the development server, you need to perform following steps
+      Run these commands
+      `bundle`
+    * To run all the migrations `rails db:migrate`.
+    * You need to run the Seed file in order to create super admin for the first time so, you can run the application smoothly. In order to perform this  you need to type this
+      `rails db:seed`
 
 * Configuration
   * Rubocop configuration settings

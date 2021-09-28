@@ -59,5 +59,4 @@ class User::RegistrationsController < Devise::RegistrationsController
     redirect_to '/dashboard'
     # super(resource)
   end
-
 end
