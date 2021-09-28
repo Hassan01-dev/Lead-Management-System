@@ -23,7 +23,7 @@ Rails.application.routes.draw do
 
   resources :users
 
-  get "*path", to: redirect('/'), code: 404
+  get '*path', to: redirect('/'), code: 404
   # match '*path', to: redirect("#{Rails.root}/public/404"), via: :get, code: 404
   # get '*unmatched_route', to: 'leads#index', code: 404
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
