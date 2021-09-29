@@ -9,7 +9,7 @@ class CommentsController < ApplicationController
     if current_user.has_role? :BD
       @comment = Comment.new
     elsif @phase.is_accepted
-      if (current_user == User.find(@phase.user_id)) || (@phase.assigned_engineer.include? current_user.id)
+      if (current_user == User.find(@phase.user_id)) || (@phase.assigned_engineer&.include? current_user.id)
         @comment = Comment.new
       else
         flash[:alert] = 'You are not authorized to perform this action'
