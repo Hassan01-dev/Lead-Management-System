@@ -18,7 +18,6 @@ class LeadsController < ApplicationController
     @lead = Lead.new(lead_params)
     authorize @lead
     @lead.user = current_user
-    @lead.is_sale = false
     if @lead.save
       LeadMailer.with(lead: @lead).lead_created.deliver_later
       flash[:success] = 'Lead Created Successfully.'

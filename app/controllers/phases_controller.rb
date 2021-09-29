@@ -18,7 +18,6 @@ class PhasesController < ApplicationController # rubocop:disable Metrics/ClassLe
   def create # rubocop:disable Metrics/AbcSize
     @phase = @lead.phases.build(phase_params)
     authorize @phase
-    @phase.approved = false
     if @phase.save
       PhaseMailer.with(phase: @phase, admin: current_user).phase_created.deliver_later
       PhaseMailer.with(phase: @phase, admin: current_user).phase_assigned_TM.deliver_later
