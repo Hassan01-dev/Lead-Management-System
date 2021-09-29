@@ -1,7 +1,7 @@
 <% if !phase.approved %>
   <% if (phase.end_date - Date.current).to_i.negative? %>
     <td><%= link_to 'Expired', phase_approve_path(phase),
-        data: { confirm: 'Are you sure?' }, class: "btn btn-warning" %></td>
+        data: { confirm: 'Are you sure?' }, class: "btn btn-warning",id: "phase_approve_#{phase.id}" ,remote: true, method: :patch %></td>
   <% else %>
     <td><%= link_to 'Approve', phase_approve_path(phase),
         data: { confirm: 'Are you sure?' }, class: "btn btn-info",id: "phase_approve_#{phase.id}" ,remote: true, method: :patch %></td>
