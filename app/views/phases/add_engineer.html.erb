@@ -12,26 +12,17 @@
     </tr>
     </thead>
     <tbody>
-        <% if @phase.assigned_engineer %>
-          <% all_engineer.each do |x| %>
-            <tr>
-            <td><%= x.user_name %></td>
-            <% if @phase.assigned_engineer.include? x.id.to_s %>
-              <td><%= link_to 'Remove', phase_remove_engineer_from_phase_path(@phase, user_id: x.id) ,
-                id: "remove_engineer_#{x.id}", method: :patch,
-                data: { confirm: 'Are you sure?' }, class: "btn btn-danger", remote: true %></td>
-            <% else %>
-              <td><%= link_to 'Add', phase_add_engineer_to_phase_path(@phase, user_id: x.id) , class: "btn btn-secondary", id: "add_engineer_#{x.id}", method: :patch, remote: true %></td>
-            <% end %>
-          </tr>
+        <% all_engineer.each do |x| %>
+          <tr>
+          <td><%= x.user_name %></td>
+          <% if @phase.assigned_engineer&.include? x.id.to_s %>
+            <td><%= link_to 'Remove', phase_remove_engineer_from_phase_path(@phase, user_id: x.id) ,
+              id: "remove_engineer_#{x.id}", method: :patch,
+              data: { confirm: 'Are you sure?' }, class: "btn btn-danger", remote: true %></td>
+          <% else %>
+            <td><%= link_to 'Add', phase_add_engineer_to_phase_path(@phase, user_id: x.id) , class: "btn btn-secondary", id: "add_engineer_#{x.id}", method: :patch, remote: true %></td>
           <% end %>
-        <% else %>
-          <% all_engineer.each do |x| %>
-            <tr>
-              <td><%= x.user_name %></td>
-              <td><%= link_to 'Add', phase_add_engineer_to_phase_path(@phase, user_id: x.id) , class: "btn btn-secondary", id: "add_engineer_#{x.id}", method: :patch, remote: true %></td>
-            </tr>
-            <% end %>
+        </tr>
         <% end %>
     </tbody>
   </table>
