@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :leads do
     get '/approve', to: 'leads#approve', as: 'approve'
     resources :phases, shallow: true do
-      get '/add_engineer', to: 'phases#add_engineer', as: 'add_engineer'
+      get '/new_engineer', to: 'phases#new_engineer', as: 'new_engineer'
       patch '/add_engineer_to_phase', to: 'phases#add_engineer_to_phase', as: 'add_engineer_to_phase'
       patch '/remove_engineer_from_phase', to: 'phases#remove_engineer_from_phase', as: 'remove_engineer_from_phase'
       patch '/approve', to: 'phases#approve', as: 'approve'

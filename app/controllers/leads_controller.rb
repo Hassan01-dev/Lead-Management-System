@@ -2,6 +2,7 @@
 
 class LeadsController < ApplicationController
   layout 'dashboard'
+  include FlashMessages
 
   before_action :find_lead, only: %i[show edit update destroy] # rubocop:disable Rails/LexicallyScopedActionFilter
 
@@ -20,8 +21,7 @@ class LeadsController < ApplicationController
     @lead.user = current_user
     if @lead.save
       LeadMailer.with(lead: @lead).lead_created.deliver_later
-      flash[:success] = 'Lead Created Successfully.'
-      redirect_to @lead
+      flash_message('Lead Created Successfully.', @lead)
     else
       render 'new'
     end
@@ -30,8 +30,7 @@ class LeadsController < ApplicationController
   def update
     if @lead.update(lead_params)
       LeadMailer.with(lead: @lead, admin: current_user).lead_update.deliver_later
-      flash[:notice] = 'Lead Updated Successfully.'
-      redirect_to @lead
+      flash_message('Lead Updated Successfully.', @lead)
     else
       render 'edit'
     end
@@ -41,11 +40,6 @@ class LeadsController < ApplicationController
     @lead.destroy
     LeadMailer.with(lead: @lead, admin: current_user).lead_deleted.deliver_later
     flash[:alert] = 'Lead Deleted Successfully.'
-
-    respond_to do |format|
-      format.html { redirect_to leads_path }
-      format.js
-    end
   end
 
   def approve
@@ -54,8 +48,7 @@ class LeadsController < ApplicationController
     if check_lead
       redirect_to new_project_path(lead_id: @lead.id)
     else
-      flash[:alert] = 'Some Phase for this Lead is not approved.'
-      redirect_to leads_path
+      flash_message('Some Phase for this Lead is not approved.', leads_path, 'error')
     end
   end
 

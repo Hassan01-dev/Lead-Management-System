@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-class PhasesController < ApplicationController # rubocop:disable Metrics/ClassLength
+class PhasesController < ApplicationController
   layout 'dashboard'
+  include FlashMessages
   before_action :find_phase, only: %i[show edit update destroy] # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :find_lead, only: %i[index create]
-  before_action :find_phase_for_custom_action, only: %i[add_engineer approve accepted]
+  before_action :find_phase_for_custom_action, only: %i[new_engineer approve accepted]
 
   def index
     @phases = @lead.phases
@@ -18,12 +19,12 @@ class PhasesController < ApplicationController # rubocop:disable Metrics/ClassLe
   def create # rubocop:disable Metrics/AbcSize
     @phase = @lead.phases.build(phase_params)
     authorize @phase
+
     if @phase.save
       PhaseMailer.with(phase: @phase, admin: current_user).phase_created.deliver_later
       PhaseMailer.with(phase: @phase, admin: current_user).phase_assigned_TM.deliver_later
       PhaseExpireMailJob.set(wait: (@phase.end_date - Date.current).days).perform_later(@phase)
-      flash[:success] = 'Phase Created Successfully.'
-      redirect_to @phase
+      flash_message('Phase Created Successfully.', @phase)
     else
       render 'new'
     end
@@ -32,8 +33,7 @@ class PhasesController < ApplicationController # rubocop:disable Metrics/ClassLe
   def update
     if @phase.update(phase_params)
       PhaseMailer.with(phase: @phase, admin: current_user).phase_update.deliver_later
-      flash[:notice] = 'Phase Updated Successfully.'
-      redirect_to @phase
+      flash_message('Phase Updated Successfully.', @phase)
     else
       render :edit
     end
@@ -43,21 +43,11 @@ class PhasesController < ApplicationController # rubocop:disable Metrics/ClassLe
     @phase.destroy
     PhaseMailer.with(phase: @phase, admin: current_user).phase_deleted.deliver_later
     flash[:alert] = 'Phase Deleted Successfully.'
-    respond_to do |format|
-      format.html { redirect_to lead_phases_path(@phase.lead) }
-      format.js
-    end
   end
 
   def approve
     authorize @phase, :update?
-    if @phase.toggle!(:approved) # rubocop:disable Rails/SkipsModelValidations
-      PhaseMailer.with(phase: @phase, admin: current_user).phase_status.deliver_later
-    end
-    respond_to do |format|
-      format.html { redirect_to lead_phases_path(@phase.lead) }
-      format.js
-    end
+    PhaseMailer.with(phase: @phase, admin: current_user).phase_status.deliver_later if @phase.toggle!(:approved) # rubocop:disable Rails/SkipsModelValidations
   end
 
   def accepted
@@ -68,7 +58,7 @@ class PhasesController < ApplicationController # rubocop:disable Metrics/ClassLe
     end
   end
 
-  def add_engineer; end
+  def new_engineer; end
 
   def add_engineer_to_phase # rubocop:disable Metrics/AbcSize
     @phase = Phase.find(params[:phase_id])
@@ -82,16 +72,14 @@ class PhasesController < ApplicationController # rubocop:disable Metrics/ClassLe
         format.js
       end
     else
-      flash[:alert] = 'Unknown Error happened'
-      redirect_to phase_add_engineer_path(@phase)
+      flash_message('Unknown Error happened', phase_add_engineer_path(@phase), 'alert')
     end
   end
 
   def remove_engineer_from_phase # rubocop:disable Metrics/AbcSize
     @phase = Phase.find(params[:phase_id])
     if @phase.assigned_engineer.empty?
-      flash[:alert] = 'There is no one to remove from the list.'
-      redirect_to phase_add_engineer_path(@phase)
+      flash_message('There is no one to remove from the list.', phase_add_engineer_path(@phase), 'alert')
     else
       @arr = @phase.assigned_engineer
       @arr.delete(params[:user_id])
@@ -102,8 +90,7 @@ class PhasesController < ApplicationController # rubocop:disable Metrics/ClassLe
           format.js
         end
       else
-        flash[:alert] = 'Unknown Error happened.'
-        redirect_to phase_add_engineer_path(@phase)
+        flash_message('Unknown Error happened.', phase_add_engineer_path(@phase), 'alert')
       end
     end
   end

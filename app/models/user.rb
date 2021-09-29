@@ -10,7 +10,6 @@ class User < ApplicationRecord
   has_many :leads # rubocop:disable Rails/HasManyOrHasOneDependent
   has_many :comments # rubocop:disable Rails/HasManyOrHasOneDependent
 
-  # validates :title, presence: true, length: { minimum: 5 }
   after_create :add_role_to_user
   validates :user_name, presence: true
   validates :email, presence: true
