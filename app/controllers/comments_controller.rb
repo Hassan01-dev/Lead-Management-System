@@ -9,7 +9,7 @@ class CommentsController < ApplicationController
     if current_user.has_role? :BD
       @comment = Comment.new
     elsif @phase.is_accepted
-      if (current_user == User.find(@phase.user_id)) || (@phase.assigned_engineer&.include? current_user.id)
+      if (current_user == @phase.user) || @phase.assigned_engineer?(current_user)
         @comment = Comment.new
       else
         flash[:alert] = 'You are not authorized to perform this action'
@@ -22,7 +22,7 @@ class CommentsController < ApplicationController
   end
 
   def create # rubocop:disable Metrics/AbcSize
-    if current_user == User.find(@phase.user_id) || (@phase.assigned_engineer.include? current_user.id) || (current_user.has_role? :BD) # rubocop:disable Layout/LineLength
+    if current_user == @phase.user || @phase.assigned_engineer?(current_user) || (current_user.has_role? :BD)
       @comment = @phase.comments.build(comment_params)
       @comment.user = current_user
       if @comment.save
