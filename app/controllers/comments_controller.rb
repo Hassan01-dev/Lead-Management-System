@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
     if (current_user.has_role? :BD) || (@phase.is_accepted && (current_user == @phase.user) || @phase.assigned_engineer?(current_user)) # rubocop:disable Layout/LineLength
       @comment = Comment.new
     else
-      flash_message('You are not authorized to perform this action', phase_path(@phase), 'error')
+      flash_message(I18n.t('common_errors.not_authorized'), phase_path(@phase), 'error')
     end
   end
 
@@ -20,24 +20,24 @@ class CommentsController < ApplicationController
       @comment.user = current_user
       if @comment.save
         CommentMailer.with(comment: @comment, user: current_user).comment_create.deliver_later
-        flash_message('Comment Created Successfully.', phase_path(@phase))
+        flash_message(I18n.t('comment.messages.create'), phase_path(@phase))
       else
         render new
       end
     end
-    flash_message('You are not authorized to perform this action', phase_path(@phase), 'error')
+    flash_message(I18n.t('common_errors.not_authorized'), phase_path(@phase), 'error')
   end
 
   def edit
     unless (current_user == @comment.user) || (current_user.has_role? :BD) # rubocop:disable Style/GuardClause
-      flash_message('You are not authorized to perform this action', phase_path(@comment.phase), 'error')
+      flash_message(I18n.t('common_errors.not_authorized'), phase_path(@comment.phase), 'error')
     end
   end
 
   def update
     if @comment.update(comment_params)
       CommentMailer.with(comment: @comment, user: current_user).comment_edit.deliver_later
-      flash_message('Comment Updated Successfully', phase_path(@comment.phase))
+      flash_message(I18n.t('comment.messages.update'), phase_path(@comment.phase))
     else
       render :edit
     end
@@ -47,7 +47,7 @@ class CommentsController < ApplicationController
     @phase = @comment.phase
     @comment.destroy
     CommentMailer.with(comment: @comment, user: current_user).comment_deleted.deliver_later
-    flash[:alert] = 'Comment Deleted Successfully.'
+    flash[:alert] = I18n.t('comment.messages.destroy')
   end
 
   def delete_image

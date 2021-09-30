@@ -24,7 +24,7 @@ class PhasesController < ApplicationController
       PhaseMailer.with(phase: @phase, admin: current_user).phase_created.deliver_later
       PhaseMailer.with(phase: @phase, admin: current_user).phase_assigned_TM.deliver_later
       PhaseExpireMailJob.set(wait: (@phase.end_date - Date.current).days).perform_later(@phase)
-      flash_message('Phase Created Successfully.', @phase)
+      flash_message(I18n.t('phases.messages.create'), @phase)
     else
       render 'new'
     end
@@ -33,7 +33,7 @@ class PhasesController < ApplicationController
   def update
     if @phase.update(phase_params)
       PhaseMailer.with(phase: @phase, admin: current_user).phase_update.deliver_later
-      flash_message('Phase Updated Successfully.', @phase)
+      flash_message(I18n.t('phases.messages.update'), @phase)
     else
       render :edit
     end
@@ -42,7 +42,7 @@ class PhasesController < ApplicationController
   def destroy
     @phase.destroy
     PhaseMailer.with(phase: @phase, admin: current_user).phase_deleted.deliver_later
-    flash[:alert] = 'Phase Deleted Successfully.'
+    flash[:alert] = I18n.t('phases.messages.destroy')
   end
 
   def approve
@@ -51,48 +51,30 @@ class PhasesController < ApplicationController
   end
 
   def accepted
-    if @phase.toggle!(:is_accepted) # rubocop:disable Rails/SkipsModelValidations
-      redirect_to phase_path(@phase)
-    else
-      redirect_to lead_phases_path(@phase.lead)
-    end
+    redirect_to phase_path(@phase) if @phase.toggle!(:is_accepted) # rubocop:disable Rails/SkipsModelValidations
+    redirect_to lead_phases_path(@phase.lead)
   end
 
   def new_engineer; end
 
-  def add_engineer_to_phase # rubocop:disable Metrics/AbcSize
+  def add_engineer_to_phase
     @phase = Phase.find(params[:phase_id])
     @arr = []
     @arr << @phase.assigned_engineer if @phase.assigned_engineer
     @arr << params[:user_id]
     @phase.assigned_engineer = @arr.flatten.uniq
-    if @phase.save
-      respond_to do |format|
-        format.html { redirect_to phase_add_engineer_path(@phase) }
-        format.js
-      end
-    else
-      flash_message('Unknown Error happened', phase_add_engineer_path(@phase), 'alert')
-    end
+    flash_message(I18n.t('common_errors.unknown_error'), phase_add_engineer_path(@phase), 'alert') unless @phase.save
   end
 
   def remove_engineer_from_phase # rubocop:disable Metrics/AbcSize
     @phase = Phase.find(params[:phase_id])
     if @phase.assigned_engineer.empty?
-      flash_message('There is no one to remove from the list.', phase_add_engineer_path(@phase), 'alert')
-    else
-      @arr = @phase.assigned_engineer
-      @arr.delete(params[:user_id])
-      @phase.assigned_engineer = @arr
-      if @phase.save
-        respond_to do |format|
-          format.html { redirect_to phase_add_engineer_path(@phase) }
-          format.js
-        end
-      else
-        flash_message('Unknown Error happened.', phase_add_engineer_path(@phase), 'alert')
-      end
+      flash_message(I18n.t('phases.messages.empty_engineer_list'), phase_add_engineer_path(@phase), 'alert')
     end
+    @arr = @phase.assigned_engineer
+    @arr.delete(params[:user_id])
+    @phase.assigned_engineer = @arr
+    flash_message(I18n.t('common_errors.unknown_error'), phase_add_engineer_path(@phase), 'alert') unless @phase.save
   end
 
   private

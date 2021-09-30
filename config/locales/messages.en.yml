@@ -1,0 +1,28 @@
+# Additional translations at https://github.com/heartcombo/devise/wiki/I18n
+
+en:
+  leads:
+    messages:
+      create: "Lead Created Successfully."
+      update: "Lead Updated Successfully."
+      destroy: "Lead Deleted Successfully."
+      phase_approved: "Some Phase for this Lead is not approved."
+      status_changed: "Lead Status Changed Successfully."
+  phases:
+    messages:
+      create: "Phase Created Successfully."
+      update: "Phase Updated Successfully."
+      destroy: "Phase Deleted Successfully."
+      empty_engineer_list: "There is no one to remove from the list."
+    errors:
+      start_date: "Start Date must be equal or greater than the current date."
+      end_date: "End Date must be greater than or equal to the start date."
+  comment:
+    messages:
+      create: "Comment Created Successfully."
+      update: "Comment Updated Successfully."
+      destroy: "Comment Deleted Successfully."
+  common_errors:
+    not_authorized: "You are not authorized to perform this action."
+    unknown_error: "Some unknown error prevent to perform this action."
+

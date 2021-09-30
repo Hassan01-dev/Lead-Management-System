@@ -21,7 +21,7 @@ class LeadsController < ApplicationController
     @lead.user = current_user
     if @lead.save
       LeadMailer.with(lead: @lead).lead_created.deliver_later
-      flash_message('Lead Created Successfully.', @lead)
+      flash_message(I18n.t('leads.messages.create'), @lead)
     else
       render 'new'
     end
@@ -30,7 +30,7 @@ class LeadsController < ApplicationController
   def update
     if @lead.update(lead_params)
       LeadMailer.with(lead: @lead, admin: current_user).lead_update.deliver_later
-      flash_message('Lead Updated Successfully.', @lead)
+      flash_message(I18n.t('leads.messages.update'), @lead)
     else
       render 'edit'
     end
@@ -39,7 +39,7 @@ class LeadsController < ApplicationController
   def destroy
     @lead.destroy
     LeadMailer.with(lead: @lead, admin: current_user).lead_deleted.deliver_later
-    flash[:alert] = 'Lead Deleted Successfully.'
+    flash[:alert] = I18n.t('leads.messages.destroy')
   end
 
   def approve
@@ -48,7 +48,7 @@ class LeadsController < ApplicationController
     if check_lead
       redirect_to new_project_path(lead_id: @lead.id)
     else
-      flash_message('Some Phase for this Lead is not approved.', leads_path, 'error')
+      flash_message(I18n.t('leads.messages.phase_approved'), leads_path, 'error')
     end
   end
 
