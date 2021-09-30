@@ -1,0 +1,2 @@
+$("#user_status_<%= @user.id %>").replaceWith('<td id="user_status_<%= @user.id %>"><%= link_to "Activate", activate_account_path(@user),
+              method: :patch, data: { confirm: "Are you sure?" }, class: "btn btn-success", remote: true %></td>')

@@ -14,12 +14,14 @@ Rails.application.routes.draw do
     end
   end
 
+  patch '/user_activate', to: 'users#activate', as: 'activate_account'
+  patch '/user_disabled', to: 'users#disabled', as: 'disable_account'
   post '/comments/:id/delete_image/', to: 'comments#delete_image', as: 'delete_image'
   get '/users/:id/change_password', to: 'users#password_change', as: 'password_change'
   patch '/password_update/:id', to: 'users#password_update', as: 'password_update'
-  # root to: 'dashboard#login'
+
   root to: redirect('/users/sign_in')
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'user/sessions' }
 
   resources :users
 

@@ -2,7 +2,8 @@
 
 class UsersController < ApplicationController
   layout 'dashboard'
-  before_action :find_user, only: %i[edit update destroy password_change] # rubocop:disable Rails/LexicallyScopedActionFilter
+  before_action :find_user, only: %i[edit update password_change] # rubocop:disable Rails/LexicallyScopedActionFilter
+  before_action :find_user_for_custom_action, only: %i[activate disabled]
   before_action :check_user_auth, only: %i[edit update] # rubocop:disable Rails/LexicallyScopedActionFilter
 
   def index
@@ -34,10 +35,14 @@ class UsersController < ApplicationController
     end
   end
 
-  def destroy
-    authorize @user
-    @user.destroy
-    redirect_to users_path
+  def disabled
+    authorize @user, :update?
+    @user.toggle!(:active) # rubocop:disable Rails/SkipsModelValidations
+  end
+
+  def activate
+    authorize @user, :update?
+    @user.toggle!(:active) # rubocop:disable Rails/SkipsModelValidations
   end
 
   def password_change; end
@@ -75,5 +80,9 @@ class UsersController < ApplicationController
 
   def check_user_auth
     authorize @user if current_user && (current_user.id != @user.id)
+  end
+
+  def find_user_for_custom_action
+    @user = User.find(params[:format])
   end
 end

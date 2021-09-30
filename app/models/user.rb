@@ -8,7 +8,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable
   has_many :projects # rubocop:disable Rails/HasManyOrHasOneDependent
   has_many :leads # rubocop:disable Rails/HasManyOrHasOneDependent
-  has_many :comments # rubocop:disable Rails/HasManyOrHasOneDependent
+  has_many :comments, dependent: :nullify
 
   after_create :add_role_to_user
   validates :user_name, presence: true
