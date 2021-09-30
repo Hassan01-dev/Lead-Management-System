@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :leads do
     get '/approve', to: 'leads#approve', as: 'approve'
     resources :phases, shallow: true do
-      get '/add_engineer', to: 'phases#add_engineer', as: 'add_engineer'
+      get '/new_engineer', to: 'phases#new_engineer', as: 'new_engineer'
       patch '/add_engineer_to_phase', to: 'phases#add_engineer_to_phase', as: 'add_engineer_to_phase'
       patch '/remove_engineer_from_phase', to: 'phases#remove_engineer_from_phase', as: 'remove_engineer_from_phase'
       patch '/approve', to: 'phases#approve', as: 'approve'
@@ -14,12 +14,14 @@ Rails.application.routes.draw do
     end
   end
 
+  patch '/user_activate', to: 'users#activate', as: 'activate_account'
+  patch '/user_disabled', to: 'users#disabled', as: 'disable_account'
   post '/comments/:id/delete_image/', to: 'comments#delete_image', as: 'delete_image'
   get '/users/:id/change_password', to: 'users#password_change', as: 'password_change'
   patch '/password_update/:id', to: 'users#password_update', as: 'password_update'
-  # root to: 'dashboard#login'
+
   root to: redirect('/users/sign_in')
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'user/sessions' }
 
   resources :users
 

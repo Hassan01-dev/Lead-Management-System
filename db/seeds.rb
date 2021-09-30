@@ -28,7 +28,7 @@ end
   User.create!(user_name: Faker::Name.name, email: email, user_role: 'engineer', password: @default_password)
 end
 
-@default_client_contact = '01234567890'
+@default_client_contact = '12345678901'
 8.times do |serial|
   email = "testclient#{serial + 1}@gmail.com"
   Lead.create!(lead_name: "Test Lead #{serial + 1}", lead_type: 'interview', platform_used: 'Linux',

@@ -2,11 +2,11 @@
 
 module PhasesHelper
   def all_tech_manager
-    User.where(user_role: 'TM')
+    User.where(user_role: 'TM', active: true)
   end
 
   def all_engineer
-    User.where(user_role: 'engineer')
+    User.where(user_role: 'engineer', active: true)
   end
 
   def find_all_engineer_of_phase(arr)

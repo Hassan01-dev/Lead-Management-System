@@ -2,22 +2,15 @@
 
 class CommentsController < ApplicationController
   layout 'dashboard'
-  before_action :find_comment, only: %i[show edit update destroy] # rubocop:disable Rails/LexicallyScopedActionFilter
+  include FlashMessages
+  before_action :find_comment, only: %i[show edit update destroy delete_image] # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :find_phase, only: %i[new index create] # rubocop:disable Rails/LexicallyScopedActionFilter
 
-  def new # rubocop:disable Metrics/AbcSize
-    if current_user.has_role? :BD
+  def new
+    if (current_user.has_role? :BD) || (@phase.is_accepted && (current_user == @phase.user) || @phase.assigned_engineer?(current_user)) # rubocop:disable Layout/LineLength
       @comment = Comment.new
-    elsif @phase.is_accepted
-      if (current_user == @phase.user) || @phase.assigned_engineer?(current_user)
-        @comment = Comment.new
-      else
-        flash[:alert] = 'You are not authorized to perform this action'
-        redirect_to phase_path(@phase)
-      end
     else
-      flash[:alert] = 'You are not authorized to perform this action'
-      redirect_to phase_path(@phase)
+      flash_message(I18n.t('common_errors.not_authorized'), phase_path(@phase), 'error')
     end
   end
 
@@ -27,48 +20,38 @@ class CommentsController < ApplicationController
       @comment.user = current_user
       if @comment.save
         CommentMailer.with(comment: @comment, user: current_user).comment_create.deliver_later
-        flash[:success] = 'Comment Created Successfully.'
-        redirect_to phase_path(@phase)
+        flash_message(I18n.t('comment.messages.create'), phase_path(@phase))
       else
         render new
       end
     else
-      flash[:alert] = 'You are not authorized to perform this action'
-      redirect_to phase_path(@phase)
+      flash_message(I18n.t('common_errors.not_authorized'), phase_path(@phase), 'error')
     end
   end
 
   def edit
-    unless current_user && ((current_user == @comment.user) || (current_user.has_role? :BD)) # rubocop:disable Style/GuardClause
-      flash[:alert] = 'You are not authorized to perform this action.'
-      redirect_to phase_path(@comment.phase)
+    unless (current_user == @comment.user) || (current_user.has_role? :BD) # rubocop:disable Style/GuardClause
+      flash_message(I18n.t('common_errors.not_authorized'), phase_path(@comment.phase), 'error')
     end
   end
 
   def update
     if @comment.update(comment_params)
       CommentMailer.with(comment: @comment, user: current_user).comment_edit.deliver_later
-      flash[:notice] = 'Comment Updated Successfully.'
-      redirect_to phase_path(@comment.phase)
+      flash_message(I18n.t('comment.messages.update'), phase_path(@comment.phase))
     else
       render :edit
     end
   end
 
   def destroy
-    @phase = Comment.find(params[:id]).phase
+    @phase = @comment.phase
     @comment.destroy
     CommentMailer.with(comment: @comment, user: current_user).comment_deleted.deliver_later
-    flash[:alert] = 'Comment Deleted Successfully.'
-
-    respond_to do |format|
-      format.html { redirect_to phase_path(@phase) }
-      format.js
-    end
+    flash[:alert] = I18n.t('comment.messages.destroy')
   end
 
   def delete_image
-    @comment = Comment.find(params[:id])
     @comment.images.where(id: params[:format]).purge
   end
 

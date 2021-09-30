@@ -16,7 +16,7 @@ class Phase < ApplicationRecord
   private
 
   def correct_date # rubocop:disable Metrics/AbcSize
-    errors[:base] << 'Start Date must not be in past' if id.nil? && (start_date - Date.current).to_i.negative?
-    errors[:base] << 'End Date must be greater then Start date' if (end_date - start_date).to_i.negative?
+    errors[:base] << I18n.t('phases.errors.start_date') if id.nil? && (start_date - Date.current).to_i.negative?
+    errors[:base] << I18n.t('phases.errors.end_date') if (end_date - start_date).to_i.negative?
   end
 end
