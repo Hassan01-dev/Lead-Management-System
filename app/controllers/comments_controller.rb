@@ -24,8 +24,9 @@ class CommentsController < ApplicationController
       else
         render new
       end
+    else
+      flash_message(I18n.t('common_errors.not_authorized'), phase_path(@phase), 'error')
     end
-    flash_message(I18n.t('common_errors.not_authorized'), phase_path(@phase), 'error')
   end
 
   def edit
