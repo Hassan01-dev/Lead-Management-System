@@ -7,25 +7,19 @@ class CommentsController < ApplicationController
   before_action :find_phase, only: %i[new index create] # rubocop:disable Rails/LexicallyScopedActionFilter
 
   def new
-    if (current_user.has_role? :BD) || (@phase.is_accepted && (current_user == @phase.user) || @phase.assigned_engineer?(current_user)) # rubocop:disable Layout/LineLength
-      @comment = Comment.new
-    else
-      flash_message(I18n.t('common_errors.not_authorized'), phase_path(@phase), 'error')
-    end
+    authorize @phase
+    @comment = Comment.new
   end
 
-  def create # rubocop:disable Metrics/AbcSize
-    if current_user == @phase.user || @phase.assigned_engineer?(current_user) || (current_user.has_role? :BD)
-      @comment = @phase.comments.build(comment_params)
-      @comment.user = current_user
-      if @comment.save
-        CommentMailer.with(comment: @comment, user: current_user).comment_create.deliver_later
-        flash_message(I18n.t('comment.messages.create'), phase_path(@phase))
-      else
-        render new
-      end
+  def create
+    authorize @phase
+    @comment = @phase.comments.build(comment_params)
+    @comment.user = current_user
+    if @comment.save
+      CommentMailer.with(comment: @comment, user: current_user).comment_create.deliver_later
+      flash_message(I18n.t('comment.messages.create'), phase_path(@phase))
     else
-      flash_message(I18n.t('common_errors.not_authorized'), phase_path(@phase), 'error')
+      render new
     end
   end
 

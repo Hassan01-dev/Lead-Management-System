@@ -34,4 +34,16 @@ class PhasePolicy < ApplicationPolicy
   def destroy?
     update?
   end
+
+  def add_engineer_to_phase?
+    remove_engineer_from_phase?
+  end
+
+  def remove_engineer_from_phase?
+    if @user
+      (@user.has_role? :BD) || @record.user == @user
+    else
+      false
+    end
+  end
 end

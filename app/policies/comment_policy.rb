@@ -8,11 +8,19 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def new?
-    update?
+    if @user
+      (@user.has_role? :BD) || (@record.is_accepted && (@user == @record.user) || @record.assigned_engineer?(@user))
+    else
+      false
+    end
   end
 
   def create?
-    update?
+    if @user
+      @user == @record.user || @record.assigned_engineer?(@user) || (@user.has_role? :BD)
+    else
+      false
+    end
   end
 
   def edit?
