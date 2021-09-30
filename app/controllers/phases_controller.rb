@@ -5,7 +5,8 @@ class PhasesController < ApplicationController
   include FlashMessages
   before_action :find_phase, only: %i[show edit update destroy] # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :find_lead, only: %i[index create]
-  before_action :find_phase_for_custom_action, only: %i[new_engineer approve accepted]
+  before_action :find_phase_for_custom_action,
+                only: %i[new_engineer approve accepted add_engineer_to_phase remove_engineer_from_phase]
 
   def index
     @phases = @lead.phases
@@ -16,14 +17,12 @@ class PhasesController < ApplicationController
     authorize @phase
   end
 
-  def create # rubocop:disable Metrics/AbcSize
+  def create
     @phase = @lead.phases.build(phase_params)
     authorize @phase
-
     if @phase.save
       PhaseMailer.with(phase: @phase, admin: current_user).phase_created.deliver_later
       PhaseMailer.with(phase: @phase, admin: current_user).phase_assigned_TM.deliver_later
-      PhaseExpireMailJob.set(wait: (@phase.end_date - Date.current).days).perform_later(@phase)
       flash_message(I18n.t('phases.messages.create'), @phase)
     else
       render 'new'
@@ -58,7 +57,7 @@ class PhasesController < ApplicationController
   def new_engineer; end
 
   def add_engineer_to_phase
-    @phase = Phase.find(params[:phase_id])
+    authorize @phase
     @arr = []
     @arr << @phase.assigned_engineer if @phase.assigned_engineer
     @arr << params[:user_id]
@@ -66,8 +65,8 @@ class PhasesController < ApplicationController
     flash_message(I18n.t('common_errors.unknown_error'), phase_add_engineer_path(@phase), 'alert') unless @phase.save
   end
 
-  def remove_engineer_from_phase # rubocop:disable Metrics/AbcSize
-    @phase = Phase.find(params[:phase_id])
+  def remove_engineer_from_phase
+    authorize @phase
     if @phase.assigned_engineer.empty?
       flash_message(I18n.t('phases.messages.empty_engineer_list'), phase_add_engineer_path(@phase), 'alert')
     end
