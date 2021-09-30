@@ -8,6 +8,6 @@ class Lead < ApplicationRecord
   validates :lead_name, presence: true, length: { minimum: 5 }
   validates :platform_used, presence: true, length: { minimum: 3 }
   validates :lead_type, presence: true
-  # validates :client_name, presence: true, format: { with: /\A[[:alpha:][:blank:]]+\z/ }
-  # validates :client_contact, format: { with: /\A\d{11}\z/ }
+  validates :client_name, presence: true
+  validates :client_contact, format: { with: /\A\d{11}\z/ }
 end
